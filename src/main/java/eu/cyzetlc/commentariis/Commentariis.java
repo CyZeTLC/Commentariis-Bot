@@ -51,6 +51,6 @@ public class Commentariis {
         this.jda = this.jdaBuilder.build().awaitReady();
 
         log.info("Invite me: " + this.jda.getInviteUrl(Permission.ADMINISTRATOR));
-        log.info("Bot loggedin as " + this.jda.getSelfUser().getName() + "#" + this.getJda().getSelfUser().getDiscriminator() + " <@" + this.jda.getSelfUser().getId() + ">");
+        log.info("Bot loggedIn as " + this.jda.getSelfUser().getName() + "#" + this.getJda().getSelfUser().getDiscriminator() + " <@" + this.jda.getSelfUser().getId() + ">");
     }
 }
