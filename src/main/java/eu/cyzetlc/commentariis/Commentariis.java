@@ -1,5 +1,8 @@
 package eu.cyzetlc.commentariis;
 
+import eu.cyzetlc.commentariis.commands.InfoCommand;
+import eu.cyzetlc.commentariis.listener.CommandListener;
+import eu.cyzetlc.commentariis.service.command.CommandHandler;
 import eu.cyzetlc.commentariis.service.json.JsonConfig;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
@@ -14,17 +17,18 @@ import javax.security.auth.login.LoginException;
 @Getter
 public class Commentariis {
     // A static variable. It is used to access the instance of the class from anywhere.
+    @Getter
     private static Commentariis instance;
     // A logger. It is used to log things.
     public static Logger log = LoggerFactory.getLogger(Commentariis.class.getName());
-
     // A variable that is used to store the config.
     private final JsonConfig config;
-
     // A variable that is used build the JDA object.
     private JDABuilder jdaBuilder;
     // A variable that is used to store the JDA object.
     private JDA jda;
+    // A variable that is used to store the CommandHandler object.
+    private CommandHandler commandHandler;
 
     /**
      * The main function is the entry point of the program.
@@ -40,6 +44,23 @@ public class Commentariis {
         this.config = new JsonConfig("./config.json");
 
         this.buildJDA();
+        this.buildListeners();
+        this.buildCommands();
+    }
+
+    /**
+     * It adds a listener to the JDA object
+     */
+    private void buildListeners() {
+        this.jda.addEventListener(new CommandListener());
+    }
+
+    /**
+     * It loads the command into the command handler
+     */
+    private void buildCommands() {
+        this.commandHandler = new CommandHandler();
+        this.commandHandler.loadCommand(new InfoCommand());
     }
 
     /**
