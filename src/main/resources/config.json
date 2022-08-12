@@ -1,0 +1,17 @@
+{
+  "token": "my_bot_token",
+  "activityType": "PLAYING",
+  "activityContent": "auf Lostify.net",
+  "mysql": {
+    "hostname": "127.0.0.1",
+    "port": 3306,
+    "database": "eu_cyzetlc_discord_bot",
+    "username": "root",
+    "password": "password",
+    "poolSize": 3
+  },
+  "messages": {
+    "system.message.noperms.title": "**Keine Rechte**",
+    "system.message.noperms.content": "Dir fehlen folgende Berechtigungen: *{0}*"
+  }
+}
