@@ -1,9 +1,6 @@
 package eu.cyzetlc.commentariis;
 
-import eu.cyzetlc.commentariis.commands.GuildCommand;
-import eu.cyzetlc.commentariis.commands.InfoCommand;
-import eu.cyzetlc.commentariis.commands.LanguageCommand;
-import eu.cyzetlc.commentariis.commands.LogChannelCommand;
+import eu.cyzetlc.commentariis.commands.*;
 import eu.cyzetlc.commentariis.listener.ButtonListener;
 import eu.cyzetlc.commentariis.listener.CommandListener;
 import eu.cyzetlc.commentariis.listener.JoinGuildListener;
@@ -116,6 +113,7 @@ public class Commentarii {
         this.commandHandler.loadCommand(new InfoCommand());
         this.commandHandler.loadCommand(new LogChannelCommand());
         this.commandHandler.loadCommand(new GuildCommand());
+        this.commandHandler.loadCommand(new BroadcastCommand());
     }
 
     /**

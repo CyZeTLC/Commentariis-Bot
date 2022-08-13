@@ -142,6 +142,16 @@ public class LogHandler {
         return rs.size();
     }
 
+    /**
+     * This function returns the log channel of the guild with the given ID.
+     *
+     * @param guildId The id of the guild you want to get the log channel of.
+     * @return A TextChannel object
+     */
+    public TextChannel getLogChannelOfGuild(long guildId) {
+        return this.logChannels.get(guildId);
+    }
+
     public enum LogLevel {
         INFO(0),
         WARN(1),
