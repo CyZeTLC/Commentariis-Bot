@@ -2,8 +2,9 @@ package eu.cyzetlc.commentariis.listener;
 
 import eu.cyzetlc.commentariis.Commentarii;
 import eu.cyzetlc.commentariis.service.log.LogHandler;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Role;
+import lombok.Getter;
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.invite.GenericGuildInviteEvent;
 import net.dv8tion.jda.api.events.guild.invite.GuildInviteCreateEvent;
@@ -13,11 +14,20 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
 import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateNicknameEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
+import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.managers.AudioManager;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+
 public class LogListener extends ListenerAdapter {
+    @Getter
+    private static final LinkedHashMap<Long, List<Invite>> invites = new LinkedHashMap<>();
+
     @Override
     // A method that is called when the bot is ready.
     public void onReady(@NotNull ReadyEvent event) {
@@ -90,6 +100,23 @@ public class LogListener extends ListenerAdapter {
                 LogHandler.LogLevel.INFO,
                 event.getGuild().getIdLong()
         );
+
+        event.getGuild().retrieveInvites().queue(inviteList -> inviteList.forEach(invite -> {
+            for (Invite in : invites.get(event.getGuild().getIdLong())) {
+                if (in.getCode().equals(invite.getCode())) {
+                    if (invite.getUses() > in.getUses()) {
+                        Commentarii.getInstance().getLogHandler().log(
+                                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.join_invite.title"),
+                                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.join_invite.content", invite.getCode(), invite.getInviter().getAsMention()),
+                                LogHandler.LogLevel.INFO,
+                                event.getGuild().getIdLong()
+                        );
+                    }
+                    break;
+                }
+            }
+        }));
+        event.getGuild().retrieveInvites().queue(invites -> LogListener.getInvites().put(event.getGuild().getIdLong(), invites));
     }
 
     @Override
@@ -100,7 +127,8 @@ public class LogListener extends ListenerAdapter {
                 Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.leave.content", event.getMember().getAsMention()),
                 LogHandler.LogLevel.INFO,
                 event.getGuild().getIdLong()
-        );    }
+        );
+    }
 
     @Override
     // Logging when a user changes his nickname.
@@ -125,5 +153,12 @@ public class LogListener extends ListenerAdapter {
     public void onGenericGuildInvite(@NotNull GenericGuildInviteEvent event) {
         String log = "Es wurde ein [Einladungslink](" + event.getUrl() + ") erstellt!";
         Commentarii.getInstance().getLogHandler().log("Einladungslink erstellt", log, LogHandler.LogLevel.INFO, event.getGuild().getIdLong());
+    }
+
+    @Override
+    public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
+        AudioChannel connectedChannel = event.getMember().getVoiceState().getChannel();
+        AudioManager audioManager = event.getGuild().getAudioManager();
+        audioManager.openAudioConnection(connectedChannel);
     }
 }

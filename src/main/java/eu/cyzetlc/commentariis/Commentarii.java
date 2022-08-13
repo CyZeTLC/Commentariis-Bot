@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.checkerframework.checker.units.qual.A;
@@ -23,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
+import java.util.Arrays;
 
 @Getter
 public class Commentarii {
@@ -88,6 +90,10 @@ public class Commentarii {
         this.logHandler = new LogHandler();
         this.messageHandler = new MessageHandler();
         this.messageHandler.applyPrefix("commentarii", "commentarii.prefix");
+
+        for (Guild guild : this.jda.getGuilds()) {
+            LogListener.getInvites().put(guild.getIdLong(), guild.retrieveInvites().complete());
+        }
     }
 
     /**
@@ -129,8 +135,9 @@ public class Commentarii {
      * It builds the JDA object and sets the activity
      */
     private void buildJDA() throws LoginException, InterruptedException {
-        this.jdaBuilder = JDABuilder.create(this.config.getObject().getString("token"), GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS);
+        this.jdaBuilder = JDABuilder.create(this.config.getObject().getString("token"), GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_INVITES, GatewayIntent.GUILD_VOICE_STATES);
         this.jdaBuilder.setActivity(Activity.of(Activity.ActivityType.valueOf(this.config.getObject().getString("activityType")), this.config.getObject().getString("activityContent")));
+        this.jdaBuilder.enableIntents(Arrays.asList(GatewayIntent.values()));
         this.jda = this.jdaBuilder.build().awaitReady();
 
         log.info("Invite me: " + this.jda.getInviteUrl(Permission.ADMINISTRATOR));
