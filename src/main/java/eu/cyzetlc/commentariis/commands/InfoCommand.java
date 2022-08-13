@@ -14,7 +14,8 @@ import java.awt.*;
 import java.util.List;
 
 @CommandSpecification(
-        command = "info"
+        command = "info",
+        description = "Shows all debug-infos of the bot"
 )
 public class InfoCommand extends Command {
     @Override

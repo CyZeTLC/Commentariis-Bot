@@ -2,32 +2,34 @@ package eu.cyzetlc.commentariis.service.command;
 
 import eu.cyzetlc.commentariis.Commentarii;
 import eu.cyzetlc.commentariis.service.command.annotation.CommandSpecification;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CommandHandler {
     // Creating a new LinkedList of type Command.
     private final LinkedList<Command> commands = new LinkedList<>();
-    // A variable that is used to update the commands in the discord server.
-    public CommandListUpdateAction jdaCommands = null;
 
-    public CommandHandler() {
-        for (int i = 0; i < Commentarii.getInstance().getJda().getGuilds().size(); i++) {
-            try {
-                this.jdaCommands = Commentarii.getInstance().getJda().awaitReady().getGuilds().get(i).updateCommands();
-            } catch (Exception e) {
-                if (this.jdaCommands == null) {
-                    this.jdaCommands = Commentarii.getInstance().getJda().updateCommands();
-                }
-                e.printStackTrace();
-            }
+    public void updateCommands(Guild guild) {
+        for (net.dv8tion.jda.api.interactions.commands.Command cmd : guild.retrieveCommands().complete()) {
+            guild.deleteCommandById(cmd.getId()).queue();
         }
+
+        List<CommandData> commandData = new LinkedList<>();
+
+        for (Command cmd : this.commands) {
+            commandData.add(cmd.getCommandData());
+            Commentarii.log.info("Registered command " + cmd.getCommand());
+        }
+        Commentarii.getInstance().getJda().updateCommands().addCommands(commandData).queue();
     }
 
     /**

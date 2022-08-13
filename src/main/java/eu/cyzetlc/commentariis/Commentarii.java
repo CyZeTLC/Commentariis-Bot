@@ -1,6 +1,7 @@
 package eu.cyzetlc.commentariis;
 
 import eu.cyzetlc.commentariis.commands.InfoCommand;
+import eu.cyzetlc.commentariis.commands.LanguageCommand;
 import eu.cyzetlc.commentariis.commands.LogChannelCommand;
 import eu.cyzetlc.commentariis.listener.ButtonListener;
 import eu.cyzetlc.commentariis.listener.CommandListener;
@@ -10,6 +11,7 @@ import eu.cyzetlc.commentariis.service.button.ButtonHandler;
 import eu.cyzetlc.commentariis.service.command.CommandHandler;
 import eu.cyzetlc.commentariis.service.json.JsonConfig;
 import eu.cyzetlc.commentariis.service.log.LogHandler;
+import eu.cyzetlc.commentariis.service.message.MessageHandler;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -44,6 +46,8 @@ public class Commentarii {
     private final ButtonHandler buttonHandler;
     // Used to store the LogHandler object.
     private final LogHandler logHandler;
+    // Used to store the MessageHandler object.
+    private final MessageHandler messageHandler;
 
     /**
      * The main function is the entry point of the program.
@@ -60,10 +64,14 @@ public class Commentarii {
         this.config = new JsonConfig("./config.json");
         this.buttonHandler = new ButtonHandler();
         this.logHandler = new LogHandler();
+        this.messageHandler = new MessageHandler();
+        this.messageHandler.applyPrefix("commentarii", "commentarii.prefix");
 
         this.buildJDA();
         this.buildListeners();
         this.buildCommands();
+
+        new LogListener().onReady(new ReadyEvent(this.jda, 0));
     }
 
     /**
@@ -81,6 +89,7 @@ public class Commentarii {
      */
     private void buildCommands() {
         this.commandHandler = new CommandHandler();
+        this.commandHandler.loadCommand(new LanguageCommand());
         this.commandHandler.loadCommand(new InfoCommand());
         this.commandHandler.loadCommand(new LogChannelCommand());
     }
@@ -95,7 +104,5 @@ public class Commentarii {
 
         log.info("Invite me: " + this.jda.getInviteUrl(Permission.ADMINISTRATOR));
         log.info("Bot loggedIn as " + this.jda.getSelfUser().getName() + "#" + this.getJda().getSelfUser().getDiscriminator() + " <@" + this.jda.getSelfUser().getId() + ">");
-
-        new LogListener().onReady(new ReadyEvent(this.jda, 0));
     }
 }

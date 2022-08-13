@@ -80,7 +80,7 @@ public abstract class Command {
      */
     public void register() {
         try {
-            Commentarii.getInstance().getCommandHandler().jdaCommands.addCommands(this.commandData).queue();
+            //Commentarii.getInstance().getCommandHandler().jdaCommands.addCommands(this.commandData).queue();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -3,6 +3,8 @@ package eu.cyzetlc.commentariis.listener;
 import eu.cyzetlc.commentariis.Commentarii;
 import eu.cyzetlc.commentariis.service.command.Command;
 import eu.cyzetlc.commentariis.service.entities.Embed;
+import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
+import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -12,6 +14,16 @@ import java.awt.*;
 import java.util.concurrent.TimeUnit;
 
 public class CommandListener extends ListenerAdapter {
+    @Override
+    public void onGuildReady(@NotNull GuildReadyEvent event) {
+        Commentarii.getInstance().getCommandHandler().updateCommands(event.getGuild());
+    }
+
+    @Override
+    public void onGuildJoin(@NotNull GuildJoinEvent event) {
+        Commentarii.getInstance().getCommandHandler().updateCommands(event.getGuild());
+    }
+
     @Override
     // This is a method that is called when a slash command is used.
     public void onSlashCommand(@NotNull SlashCommandEvent e) {

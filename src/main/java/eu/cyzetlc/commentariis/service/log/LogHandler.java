@@ -23,21 +23,23 @@ public class LogHandler {
 
     public void log(String title, String log, LogLevel level, long guildId) {
         Color logColor = Color.GRAY;
+        String guildName = (guildId != -1 ? (Commentarii.getInstance().getJda().getGuildById(guildId) != null ? "[" + Commentarii.getInstance().getJda().getGuildById(guildId).getName() + "] " : "") : "");
+
         switch (level.level) {
             case 0 -> {
-                this.log.info(log);
+                this.log.info(guildName + log);
                 logColor = Color.GREEN;
             }
             case 1 -> {
-                this.log.warn(log);
+                this.log.warn(guildName + log);
                 logColor = Color.ORANGE;
             }
             case 2 -> {
-                this.log.debug(log);
+                this.log.debug(guildName + log);
                 logColor = Color.YELLOW;
             }
             case 3 -> {
-                this.log.error(log);
+                this.log.error(guildName + log);
                 logColor = Color.RED;
             }
             default -> {
