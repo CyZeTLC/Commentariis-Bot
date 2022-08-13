@@ -14,9 +14,13 @@ import java.util.LinkedList;
 
 @Getter
 public class MessageHandler {
+    // It's creating a list of languages that the bot supports.
     private final LinkedList<String> languageKeys = new LinkedList<>(Arrays.asList("de", "en"));
+    // It's a map that stores the prefix of each language.
     private final LinkedHashMap<String, String> prefixKeys = new LinkedHashMap<>();
+    // It's a map that stores the language of each guild.
     private final LinkedHashMap<Long, String> guildLanguages = new LinkedHashMap<>();
+    // It's a reference to the messages object in the config.json file.
     private final JSONObject obj;
 
     public MessageHandler() {
@@ -38,10 +42,22 @@ public class MessageHandler {
         }
     }
 
+    /**
+     * This function takes a key and a prefix key, and adds the prefix key to the prefixKeys map.
+     *
+     * @param key The key to be prefixed.
+     * @param prefixKey The key to be used as a prefix.
+     */
     public void applyPrefix(String key, String prefixKey) {
         this.prefixKeys.put(key, prefixKey);
     }
 
+    /**
+     * It updates the database with the new language key and updates the cache
+     *
+     * @param guildId The ID of the guild to apply the language to.
+     * @param languageKey The language key to apply to the guild.
+     */
     public void applyLanguage(long guildId, String languageKey) {
         if (this.languageKeys.contains(languageKey)) {
             Commentarii.getInstance().getQueryHandler().createBuilder(
@@ -51,6 +67,14 @@ public class MessageHandler {
         }
     }
 
+    /**
+     * If the guild has a language set, return the message in that language, otherwise return the message in the default
+     * language
+     *
+     * @param guildId The ID of the guild you want to get the message for.
+     * @param key The key of the message you want to get.
+     * @return The message for the guild
+     */
     public String getMessageForGuild(long guildId, String key, String... args) {
         if (this.guildLanguages.containsKey(guildId) && !this.guildLanguages.get(guildId).equals("de")) {
             return this.getStaticMessage(this.guildLanguages.get(guildId) + "." + key, args);
@@ -59,6 +83,13 @@ public class MessageHandler {
         }
     }
 
+    /**
+     * If the key exists, replace the placeholders with the arguments and return the message. If the key doesn't exist,
+     * return a message saying that the key wasn't found
+     *
+     * @param key The key of the message you want to get.
+     * @return A string
+     */
     public String getStaticMessage(@NotNull String key, String... args) {
         String firstKey = key.split("\\.")[0];
         String message = "Not Found: " + key;

@@ -44,15 +44,27 @@ public class QueryHandler implements IMySQLExtension {
         }
     }
 
+    /**
+     * It creates a new MySQLQueryBuilder object, sets the query, and returns it
+     *
+     * @param qry The query to be built.
+     * @return A new instance of MySQLQueryBuilder
+     */
     public MySQLQueryBuilder createBuilder(String qry) {
         return new MySQLQueryBuilder(this).setQuery(qry);
     }
 
+    /**
+     * Create a new MySQLQueryBuilder object, passing this MySQLQueryBuilderFactory object to the constructor.
+     *
+     * @return A new instance of the MySQLQueryBuilder class.
+     */
     public MySQLQueryBuilder createBuilder() {
         return new MySQLQueryBuilder(this);
     }
 
     @Override
+    // Getting a new connection from the HikariDataSource object.
     public Connection getNewConnection() {
         try {
             return this.hikari.getConnection();

@@ -16,8 +16,10 @@ import java.util.LinkedHashMap;
 
 @Getter
 public class LogHandler {
+    // It creates a logger for the class.
     private final Logger log = LoggerFactory.getLogger(LogHandler.class.getName());
 
+    // Creating a new LinkedHashMap with the key being a Long and the value being a TextChannel.
     private final LinkedHashMap<Long, TextChannel> logChannels = new LinkedHashMap<>();
 
     public LogHandler() {
@@ -37,6 +39,13 @@ public class LogHandler {
         }
     }
 
+    /**
+     * It checks if the guild already has a log channel set, if it does, it updates the database, if it doesn't, it inserts
+     * a new row into the database
+     *
+     * @param guild The guild the settings are for
+     * @param channel The channel to set as the log channel
+     */
     public void apply(Guild guild, TextChannel channel) {
         if (this.logChannels.containsKey(guild.getIdLong())) {
             Commentarii.getInstance().getQueryHandler().createBuilder(
@@ -50,9 +59,27 @@ public class LogHandler {
         this.logChannels.put(guild.getIdLong(), channel);
     }
 
+    /**
+     * This function logs a message to the console and to a file
+     *
+     * @param title The title of the log.
+     * @param log The log to write to.
+     * @param level The level of the log.
+     * @param guildId The ID of the guild you want to log to.
+     */
     public void log(String title, String log, LogLevel level, long guildId) {
         this.log(title,log,level,guildId,this.log);
     }
+
+    /**
+     * It logs a message to the console, and if the guild ID is not -1, it will log it to the log channel for that guild
+     *
+     * @param title The title of the log.
+     * @param log The message to log
+     * @param level The level of the log. This is used to determine the color of the log.
+     * @param guildId The ID of the guild that the log is for. If the log is not for a guild, this should be -1.
+     * @param logger The logger you want to use.
+     */
     public void log(String title, String log, LogLevel level, long guildId, Logger logger) {
         Color logColor = Color.GRAY;
         String guildName = (guildId != -1 ? (Commentarii.getInstance().getJda().getGuildById(guildId) != null ? "[" + Commentarii.getInstance().getJda().getGuildById(guildId).getName() + "] " : "") : "");
@@ -102,6 +129,12 @@ public class LogHandler {
         ).addParameters(Arrays.asList(System.currentTimeMillis(), logger.getName(), guildId, log)).executeUpdateSync();
     }
 
+    /**
+     * Get the number of logs for a guild.
+     *
+     * @param guildId The ID of the guild you want to get the log count of.
+     * @return The number of logs in the database for a specific guild.
+     */
     public int getLogCountOfGuild(long guildId) {
         CachedRowSet rs = Commentarii.getInstance().getQueryHandler().createBuilder(
                 "SELECT numeric_id FROM logs WHERE guild_id = ?"
