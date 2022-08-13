@@ -1,9 +1,11 @@
 package eu.cyzetlc.commentariis.service.button;
 
+import eu.cyzetlc.commentariis.Commentariis;
 import eu.cyzetlc.commentariis.service.button.annotation.ButtonSpecification;
 import net.dv8tion.jda.api.entities.Emoji;
 
 public abstract class Button implements IButton {
+
     @Override
     // A method that returns a `net.dv8tion.jda.api.interactions.components.Button` object.
     public net.dv8tion.jda.api.interactions.components.Button register(ButtonSpecification spec) {

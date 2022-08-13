@@ -4,6 +4,7 @@ import eu.cyzetlc.commentariis.commands.InfoCommand;
 import eu.cyzetlc.commentariis.commands.LogChannelCommand;
 import eu.cyzetlc.commentariis.listener.ButtonListener;
 import eu.cyzetlc.commentariis.listener.CommandListener;
+import eu.cyzetlc.commentariis.listener.JoinGuildListener;
 import eu.cyzetlc.commentariis.service.button.ButtonHandler;
 import eu.cyzetlc.commentariis.service.command.CommandHandler;
 import eu.cyzetlc.commentariis.service.json.JsonConfig;
@@ -60,6 +61,7 @@ public class Commentariis {
     private void buildListeners() {
         this.jda.addEventListener(new CommandListener());
         this.jda.addEventListener(new ButtonListener());
+        this.jda.addEventListener(new JoinGuildListener());
     }
 
     /**

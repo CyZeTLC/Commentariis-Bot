@@ -2,6 +2,7 @@ package eu.cyzetlc.commentariis.service.command;
 
 import com.google.common.base.Joiner;
 import eu.cyzetlc.commentariis.Commentariis;
+import eu.cyzetlc.commentariis.service.button.Button;
 import eu.cyzetlc.commentariis.service.command.annotation.CommandSpecification;
 import eu.cyzetlc.commentariis.service.entities.Embed;
 import eu.cyzetlc.commentariis.service.entities.User;
@@ -300,6 +301,28 @@ public abstract class Command {
                 } else {
                     this.tempChannel.sendMessage(message).queue();
                 }
+            }
+        }
+    }
+
+    /**
+     * It sends an embed with buttons to the temporary channel
+     *
+     * @param embed The embed you want to send.
+     * @param buttons A list of buttons to be added to the embed.
+     * @param autoDelete If the message should be deleted after a certain amount of time.
+     */
+    public void sendEmbedWithButtons(Embed embed, LinkedList<Button> buttons, boolean autoDelete) {
+        LinkedList<net.dv8tion.jda.api.interactions.components.Button> list = new LinkedList<>();
+        for (Button btn : buttons) {
+            list.add(Commentariis.getInstance().getButtonHandler().register(btn));
+        }
+
+        if (this.tempChannel != null) {
+            if (autoDelete) {
+                this.tempChannel.sendMessageEmbeds(embed.build()).setActionRow(list).queue(msg -> this.deleteAfter(msg, 5));
+            } else {
+                this.tempChannel.sendMessageEmbeds(embed.build()).setActionRow(list).queue();
             }
         }
     }
