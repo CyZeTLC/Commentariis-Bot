@@ -1,10 +1,8 @@
 package eu.cyzetlc.commentariis;
 
 import eu.cyzetlc.commentariis.commands.*;
-import eu.cyzetlc.commentariis.listener.ButtonListener;
-import eu.cyzetlc.commentariis.listener.CommandListener;
-import eu.cyzetlc.commentariis.listener.JoinGuildListener;
-import eu.cyzetlc.commentariis.listener.LogListener;
+import eu.cyzetlc.commentariis.listener.*;
+import eu.cyzetlc.commentariis.service.apply.ApplyHandler;
 import eu.cyzetlc.commentariis.service.button.ButtonHandler;
 import eu.cyzetlc.commentariis.service.command.CommandHandler;
 import eu.cyzetlc.commentariis.service.database.mysql.MySQLCredentials;
@@ -12,6 +10,7 @@ import eu.cyzetlc.commentariis.service.database.mysql.QueryHandler;
 import eu.cyzetlc.commentariis.service.json.JsonConfig;
 import eu.cyzetlc.commentariis.service.log.LogHandler;
 import eu.cyzetlc.commentariis.service.message.MessageHandler;
+import eu.cyzetlc.commentariis.service.modal.ModalHandler;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -19,6 +18,7 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,6 +50,10 @@ public class Commentarii {
     private MessageHandler messageHandler;
     // A variable that is used to store the QueryHandler object.
     private QueryHandler queryHandler;
+    // A variable that is used to store the ModalHandler object.
+    private ModalHandler modalHandler;
+    // A variable that is used to store the ApplyHandler object.
+    private ApplyHandler applyHandler;
 
     /**
      * The main function is the entry point of the program.
@@ -78,7 +82,9 @@ public class Commentarii {
      * It creates the handlers for the plugin
      */
     private void buildHandlers() {
+        this.applyHandler = new ApplyHandler();
         this.buttonHandler = new ButtonHandler();
+        this.modalHandler = new ModalHandler();
         this.logHandler = new LogHandler();
         this.messageHandler = new MessageHandler();
         this.messageHandler.applyPrefix("commentarii", "commentarii.prefix");
@@ -91,7 +97,7 @@ public class Commentarii {
     private void buildMySQLConnection() {
         this.queryHandler = new QueryHandler(new JsonConfig(this.config.getObject().getJSONObject("mysql")).load(MySQLCredentials.class));
         this.queryHandler.createBuilder("CREATE TABLE IF NOT EXISTS logs(numeric_id INT UNIQUE AUTO_INCREMENT, timestamp BIGINT, thread VARCHAR(64), guild_id BIGINT, text TEXT);").executeUpdateSync();
-        this.queryHandler.createBuilder("CREATE TABLE IF NOT EXISTS settings(numeric_id INT UNIQUE AUTO_INCREMENT, guild_id BIGINT, language VARCHAR(3), log_channel BIGINT);").executeUpdateSync();
+        this.queryHandler.createBuilder("CREATE TABLE IF NOT EXISTS settings(numeric_id INT UNIQUE AUTO_INCREMENT, guild_id BIGINT, language VARCHAR(3), log_channel BIGINT, apply_channel BIGINT);").executeUpdateSync();
     }
 
     /**
@@ -102,6 +108,7 @@ public class Commentarii {
         this.jda.addEventListener(new ButtonListener());
         this.jda.addEventListener(new JoinGuildListener());
         this.jda.addEventListener(new LogListener());
+        this.jda.addEventListener(new ModalListener());
     }
 
     /**
@@ -114,6 +121,8 @@ public class Commentarii {
         this.commandHandler.loadCommand(new LogChannelCommand());
         this.commandHandler.loadCommand(new GuildCommand());
         this.commandHandler.loadCommand(new BroadcastCommand());
+        this.commandHandler.loadCommand(new ApplyCommand());
+        this.commandHandler.loadCommand(new ApplyChannelCommand());
     }
 
     /**

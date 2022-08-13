@@ -11,10 +11,12 @@ import lombok.Getter;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,9 +47,9 @@ public abstract class Command {
     // Creating a temporary channel for the user to use.
     protected TextChannel tempChannel;
     // Creating a temporary event that will be used to store the event that is passed to the onCommand method.
-    protected SlashCommandEvent tempEvent;
+    protected SlashCommandInteractionEvent tempEvent;
     // Creating a new instance of the CommandData class.
-    private CommandData commandData;
+    private SlashCommandData commandData;
     // Creating a list of subcommands.
     private final List<Command> subCommands = new LinkedList<>();
 
@@ -71,7 +73,7 @@ public abstract class Command {
         this.cooldownUnit = spec.cooldownType();
         this.cooldownValue = spec.cooldownValue();
         this.description = spec.description();
-        this.commandData = new CommandData(this.command, this.description);
+        this.commandData = Commands.slash(this.command, this.description);
 
         cooldowns.put(this.command, new HashMap<>());
     }
@@ -97,7 +99,7 @@ public abstract class Command {
      * @param channel The channel where the command was executed
      * @param args The arguments of the command.
      */
-    public void execute(User user, SlashCommandEvent event, TextChannel channel, String[] args) {
+    public void execute(User user, SlashCommandInteractionEvent event, TextChannel channel, String[] args) {
         Commentarii.getInstance().getLogHandler().log(
                 Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.command.executed.title"),
                 Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.command.executed.content", user.getJdaUser().getAsMention(), event.getCommandString()),
@@ -193,6 +195,7 @@ public abstract class Command {
      *
      * @param baseCommand The command to register
      */
+    @Deprecated
     public void registerSubCommand(Command baseCommand) {
         baseCommand.initialize(baseCommand.getClass().getAnnotation(CommandSpecification.class));
         this.subCommands.add(baseCommand);
@@ -202,6 +205,7 @@ public abstract class Command {
     /**
      * It adds an option to the command
      */
+    @Deprecated
     public void enableArgs() {
         this.commandData.addOptions(Collections.singleton(new OptionData(OptionType.STRING, "args", "The following arguments for command")));
     }
@@ -329,7 +333,7 @@ public abstract class Command {
      * @param autoDelete If the message should be deleted after a certain amount of time.
      */
     public void sendEmbedWithButtons(Embed embed, List<Button> buttons, boolean isReply, boolean autoDelete) {
-        LinkedList<net.dv8tion.jda.api.interactions.components.Button> list = new LinkedList<>();
+        LinkedList<net.dv8tion.jda.api.interactions.components.buttons.Button> list = new LinkedList<>();
         for (Button btn : buttons) {
             list.add(Commentarii.getInstance().getButtonHandler().register(btn));
         }
@@ -365,5 +369,5 @@ public abstract class Command {
      * @param channel The channel the command was sent in
      * @param args The arguments passed to the command.
      */
-    public abstract void onCommand(User user, SlashCommandEvent event, TextChannel channel, String[] args);
+    public abstract void onCommand(User user, SlashCommandInteractionEvent event, TextChannel channel, String[] args);
 }

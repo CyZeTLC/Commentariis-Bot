@@ -14,31 +14,31 @@ import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import java.awt.*;
 
 @CommandSpecification(
-        command = "logchannel",
-        description = "Sets the log channel"
+        command = "applychannel",
+        description = "Sets the channel for the applications"
 )
-public class LogChannelCommand extends Command {
+public class ApplyChannelCommand extends Command {
     @Override
     public void initialize(CommandSpecification spec) {
         super.initialize(spec);
-        this.getCommandData().addOptions(new OptionData(OptionType.CHANNEL, "channel", "The channel for the logs").setRequired(true));
+        this.getCommandData().addOptions(new OptionData(OptionType.CHANNEL, "channel", "The channel for the applications").setRequired(true));
     }
 
     @Override
     // This is the method that is called when the command is executed.
     public void onCommand(User user, SlashCommandInteractionEvent event, TextChannel channel, String[] args) {
         if (event.getOption("channel") != null) {
-            GuildChannel logChannel = event.getOption("channel").getAsChannel();
+            GuildChannel applyChannel = event.getOption("channel").getAsChannel();
 
-            Commentarii.getInstance().getLogHandler().apply(
-                    logChannel.getGuild(), logChannel.getGuild().getTextChannelById(logChannel.getId())
+            Commentarii.getInstance().getApplyHandler().apply(
+                    applyChannel.getGuild(), applyChannel.getGuild().getTextChannelById(applyChannel.getId())
             );
             this.sendEmbed(Embed.getEmbed(
                     "**Hura**",
                     Commentarii.getInstance().getMessageHandler().getMessageForGuild(
                             channel.getGuild().getIdLong(),
-                            "commentarii.command.logchannel.changed",
-                            logChannel.getAsMention()
+                            "commentarii.command.applychannel.changed",
+                            applyChannel.getAsMention()
                             ),
                     Color.GREEN
             ));

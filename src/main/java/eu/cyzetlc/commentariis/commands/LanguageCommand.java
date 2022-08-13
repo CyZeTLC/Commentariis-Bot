@@ -5,9 +5,8 @@ import eu.cyzetlc.commentariis.service.command.Command;
 import eu.cyzetlc.commentariis.service.command.annotation.CommandSpecification;
 import eu.cyzetlc.commentariis.service.entities.Embed;
 import eu.cyzetlc.commentariis.service.entities.User;
-import net.dv8tion.jda.api.entities.GuildChannel;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
@@ -30,7 +29,7 @@ public class LanguageCommand extends Command {
 
     @Override
     // This is the method that is called when the command is executed.
-    public void onCommand(User user, SlashCommandEvent event, TextChannel channel, String[] args) {
+    public void onCommand(User user, SlashCommandInteractionEvent event, TextChannel channel, String[] args) {
         if (event.getOption("languagekey") != null) {
             String languageKey = event.getOption("languagekey").getAsString();
 

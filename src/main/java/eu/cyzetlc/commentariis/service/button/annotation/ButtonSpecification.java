@@ -1,6 +1,6 @@
 package eu.cyzetlc.commentariis.service.button.annotation;
 
-import net.dv8tion.jda.api.interactions.components.ButtonStyle;
+import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

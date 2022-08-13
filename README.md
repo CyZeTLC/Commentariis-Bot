@@ -14,6 +14,7 @@ Use the discord bot on your own discord server.
 
 - [Invite the bot](https://discord.com/oauth2/authorize?client_id=1007778519717269516&scope=bot&permissions=8)
 - Set the logchannel with `/logchannel`
+- Set your language with `/language`
 - Have fun
 
 ## Support

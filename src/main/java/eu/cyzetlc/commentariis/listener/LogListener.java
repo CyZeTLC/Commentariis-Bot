@@ -116,7 +116,7 @@ public class LogListener extends ListenerAdapter {
     @Override
     // It logs when a user reacts to a message.
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
-        String log = event.getMember().getAsMention() + " hat auf eine Nachricht mit " + event.getReaction().getReactionEmote().getAsReactionCode() + " reagiert.";
+        String log = event.getMember().getAsMention() + " hat auf eine Nachricht mit " + event.getReaction().getEmoji().getFormatted() + " reagiert.";
         Commentarii.getInstance().getLogHandler().log("Reaktion hinzugefügt", log, LogHandler.LogLevel.INFO, event.getGuild().getIdLong());
     }
 

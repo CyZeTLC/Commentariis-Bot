@@ -3,12 +3,13 @@ package eu.cyzetlc.commentariis.commands;
 import eu.cyzetlc.commentariis.Commentarii;
 import eu.cyzetlc.commentariis.buttons.InviteMeButton;
 import eu.cyzetlc.commentariis.buttons.VisiteWebsiteButton;
+import eu.cyzetlc.commentariis.modals.ApplyModal;
 import eu.cyzetlc.commentariis.service.command.Command;
 import eu.cyzetlc.commentariis.service.command.annotation.CommandSpecification;
 import eu.cyzetlc.commentariis.service.entities.Embed;
 import eu.cyzetlc.commentariis.service.entities.User;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.awt.*;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 public class InfoCommand extends Command {
     @Override
     // This is the method that is called when the command is executed.
-    public void onCommand(User user, SlashCommandEvent event, TextChannel channel, String[] args) {
+    public void onCommand(User user, SlashCommandInteractionEvent event, TextChannel channel, String[] args) {
         StringBuilder builder = new StringBuilder();
         builder.append("**Author:**").append("\n").append("CyZeTLC").append(" ").append("×").append(" ").append("Tom").append(" ").append("C.");
         builder.append("\n\n");

@@ -23,7 +23,7 @@ public class ButtonHandler {
      * @param button The button to register.
      * @return A Button object.
      */
-    public net.dv8tion.jda.api.interactions.components.Button register(Button button) {
+    public net.dv8tion.jda.api.interactions.components.buttons.Button register(Button button) {
         if (button.getClass().isAnnotationPresent(ButtonSpecification.class)) {
             this.buttons.put(button.getClass().getAnnotation(ButtonSpecification.class).id(), button);
             return button.register(button.getClass().getAnnotation(ButtonSpecification.class));
@@ -39,7 +39,7 @@ public class ButtonHandler {
      * @param autoDelete If the message should be deleted after a certain amount of time.
      */
     public void sendEmbedWithButtons(Embed embed, List<Button> buttons, TextChannel tempChannel, boolean autoDelete) {
-        LinkedList<net.dv8tion.jda.api.interactions.components.Button> list = new LinkedList<>();
+        LinkedList<net.dv8tion.jda.api.interactions.components.buttons.Button> list = new LinkedList<>();
         for (Button btn : buttons) {
             list.add(Commentarii.getInstance().getButtonHandler().register(btn));
         }

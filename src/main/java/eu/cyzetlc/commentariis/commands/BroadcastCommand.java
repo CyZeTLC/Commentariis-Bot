@@ -7,7 +7,7 @@ import eu.cyzetlc.commentariis.service.entities.Embed;
 import eu.cyzetlc.commentariis.service.entities.User;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
@@ -26,7 +26,7 @@ public class BroadcastCommand extends Command {
 
     @Override
     // This is the method that is called when the command is executed.
-    public void onCommand(User user, SlashCommandEvent event, TextChannel channel, String[] args) {
+    public void onCommand(User user, SlashCommandInteractionEvent event, TextChannel channel, String[] args) {
         if (user.getJdaUser().getId().equals("516929484469829632")) {
             if (event.getOption("text") != null) {
                 String text = event.getOption("text").getAsString();

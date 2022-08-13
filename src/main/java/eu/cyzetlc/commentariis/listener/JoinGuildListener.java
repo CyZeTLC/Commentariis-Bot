@@ -28,9 +28,9 @@ public class JoinGuildListener extends ListenerAdapter {
                         Color.GREEN
                 ).addThumbnail("https://images-ext-2.discordapp.net/external/oNXuCm11RxiK0DwK24H8JZn3P7MhfPIoxbnYNAfxtu8/https/images-ext-2.discordapp.net/external/PO8n6i-T0Pb0hEGlitshd0iYGsEHfVmIlSyQ5eY5lok/https/emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/223/party-popper_1f389.png"),
                 List.of(new InviteMeButton()),
-                event.getGuild().getDefaultChannel(),
+                event.getGuild().getDefaultChannel().asTextChannel(),
                 false
         );
-        Commentarii.getInstance().getLogHandler().apply(event.getGuild(), event.getGuild().getDefaultChannel());
+        Commentarii.getInstance().getLogHandler().apply(event.getGuild(), event.getGuild().getDefaultChannel().asTextChannel());
     }
 }

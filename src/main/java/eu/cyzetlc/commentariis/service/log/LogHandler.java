@@ -53,8 +53,8 @@ public class LogHandler {
             ).addParameters(Arrays.asList(channel.getIdLong(), guild.getIdLong())).executeUpdateAsync();
         } else {
             Commentarii.getInstance().getQueryHandler().createBuilder(
-                    "INSERT INTO settings (guild_id, language, log_channel) VALUES (?,?,?)"
-            ).addParameters(Arrays.asList(guild.getIdLong(), "de", channel.getIdLong())).executeUpdateAsync();
+                    "INSERT INTO settings (guild_id, language, log_channel, apply_channel) VALUES (?,?,?,?)"
+            ).addParameters(Arrays.asList(guild.getIdLong(), "de", channel.getIdLong(), channel.getIdLong())).executeUpdateAsync();
         }
         this.logChannels.put(guild.getIdLong(), channel);
     }
@@ -116,7 +116,7 @@ public class LogHandler {
             } else if (Commentarii.getInstance().getJda().getGuildById(guildId) != null) {
                 Guild guild = Commentarii.getInstance().getJda().getGuildById(guildId);
                 if (guild != null && guild.getDefaultChannel() != null) {
-                    guild.getDefaultChannel().sendMessageEmbeds(Embed.getEmbed(
+                    guild.getDefaultChannel().asTextChannel().sendMessageEmbeds(Embed.getEmbed(
                             "**" + title + "**",
                             log,
                             logColor

@@ -2,8 +2,8 @@ package eu.cyzetlc.commentariis.buttons;
 
 import eu.cyzetlc.commentariis.service.button.Button;
 import eu.cyzetlc.commentariis.service.button.annotation.ButtonSpecification;
-import net.dv8tion.jda.api.events.interaction.ButtonClickEvent;
-import net.dv8tion.jda.api.interactions.components.ButtonStyle;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 @ButtonSpecification(
         id = "visitWebsite",
@@ -13,7 +13,7 @@ import net.dv8tion.jda.api.interactions.components.ButtonStyle;
 public class VisiteWebsiteButton extends Button {
     @Override
     // The method that is called when the button is clicked.
-    public void handleClick(ButtonClickEvent event) {
+    public void handleClick(ButtonInteractionEvent event) {
     }
 
     @Override
