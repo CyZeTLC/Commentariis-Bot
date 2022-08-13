@@ -1,7 +1,5 @@
 package eu.cyzetlc.commentariis.service.entities;
 
-import eu.cyzetlc.commentariis.Commentariis;
-
 public class User {
     protected final net.dv8tion.jda.api.entities.User jdaUser;
 

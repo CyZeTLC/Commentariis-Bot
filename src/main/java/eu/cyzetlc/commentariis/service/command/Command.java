@@ -1,7 +1,7 @@
 package eu.cyzetlc.commentariis.service.command;
 
 import com.google.common.base.Joiner;
-import eu.cyzetlc.commentariis.Commentariis;
+import eu.cyzetlc.commentariis.Commentarii;
 import eu.cyzetlc.commentariis.service.button.Button;
 import eu.cyzetlc.commentariis.service.command.annotation.CommandSpecification;
 import eu.cyzetlc.commentariis.service.entities.Embed;
@@ -80,7 +80,7 @@ public abstract class Command {
      */
     public void register() {
         try {
-            Commentariis.getInstance().getCommandHandler().jdaCommands.addCommands(this.commandData).queue();
+            Commentarii.getInstance().getCommandHandler().jdaCommands.addCommands(this.commandData).queue();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -306,19 +306,33 @@ public abstract class Command {
     }
 
     /**
+     * Sends an embed with buttons to the user.
+     *
+     * @param embed The embed you want to send.
+     * @param buttons A list of buttons to be added to the embed.
+     */
+    public void sendEmbedWithButtons(Embed embed, List<Button> buttons) {
+        this.sendEmbedWithButtons(embed, buttons, true, false);
+    }
+
+    /**
      * It sends an embed with buttons to the temporary channel
      *
      * @param embed The embed you want to send.
      * @param buttons A list of buttons to be added to the embed.
      * @param autoDelete If the message should be deleted after a certain amount of time.
      */
-    public void sendEmbedWithButtons(Embed embed, LinkedList<Button> buttons, boolean autoDelete) {
+    public void sendEmbedWithButtons(Embed embed, List<Button> buttons, boolean isReply, boolean autoDelete) {
         LinkedList<net.dv8tion.jda.api.interactions.components.Button> list = new LinkedList<>();
         for (Button btn : buttons) {
-            list.add(Commentariis.getInstance().getButtonHandler().register(btn));
+            list.add(Commentarii.getInstance().getButtonHandler().register(btn));
         }
 
-        if (this.tempChannel != null) {
+        if (isReply) {
+            Collection<MessageEmbed> embeds = new ArrayList<>();
+            embeds.add(embed.build());
+            this.tempEvent.replyEmbeds(embeds).addActionRow(list).queue();
+        } else if (this.tempChannel != null) {
             if (autoDelete) {
                 this.tempChannel.sendMessageEmbeds(embed.build()).setActionRow(list).queue(msg -> this.deleteAfter(msg, 5));
             } else {

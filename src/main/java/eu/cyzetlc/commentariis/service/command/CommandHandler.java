@@ -1,8 +1,7 @@
 package eu.cyzetlc.commentariis.service.command;
 
-import eu.cyzetlc.commentariis.Commentariis;
+import eu.cyzetlc.commentariis.Commentarii;
 import eu.cyzetlc.commentariis.service.command.annotation.CommandSpecification;
-import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
 import java.io.BufferedReader;
@@ -19,12 +18,12 @@ public class CommandHandler {
     public CommandListUpdateAction jdaCommands = null;
 
     public CommandHandler() {
-        for (int i = 0; i < Commentariis.getInstance().getJda().getGuilds().size(); i++) {
+        for (int i = 0; i < Commentarii.getInstance().getJda().getGuilds().size(); i++) {
             try {
-                this.jdaCommands = Commentariis.getInstance().getJda().awaitReady().getGuilds().get(i).updateCommands();
+                this.jdaCommands = Commentarii.getInstance().getJda().awaitReady().getGuilds().get(i).updateCommands();
             } catch (Exception e) {
                 if (this.jdaCommands == null) {
-                    this.jdaCommands = Commentariis.getInstance().getJda().updateCommands();
+                    this.jdaCommands = Commentarii.getInstance().getJda().updateCommands();
                 }
                 e.printStackTrace();
             }

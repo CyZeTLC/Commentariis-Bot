@@ -1,6 +1,5 @@
 package eu.cyzetlc.commentariis.service.button;
 
-import eu.cyzetlc.commentariis.Commentariis;
 import eu.cyzetlc.commentariis.service.button.annotation.ButtonSpecification;
 import net.dv8tion.jda.api.entities.Emoji;
 

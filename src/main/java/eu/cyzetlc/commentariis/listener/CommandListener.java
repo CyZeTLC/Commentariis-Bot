@@ -1,6 +1,6 @@
 package eu.cyzetlc.commentariis.listener;
 
-import eu.cyzetlc.commentariis.Commentariis;
+import eu.cyzetlc.commentariis.Commentarii;
 import eu.cyzetlc.commentariis.service.command.Command;
 import eu.cyzetlc.commentariis.service.entities.Embed;
 import net.dv8tion.jda.api.events.interaction.SlashCommandEvent;
@@ -19,7 +19,7 @@ public class CommandListener extends ListenerAdapter {
         String msg = e.getCommandString();
 
         if (e.isFromGuild()) {
-            Command command = Commentariis.getInstance().getCommandHandler().getCommand(cmd);
+            Command command = Commentarii.getInstance().getCommandHandler().getCommand(cmd);
             OptionMapping option = e.getOption("args");
 
             if (command != null) {

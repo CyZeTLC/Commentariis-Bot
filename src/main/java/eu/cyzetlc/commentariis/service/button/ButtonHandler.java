@@ -1,6 +1,6 @@
 package eu.cyzetlc.commentariis.service.button;
 
-import eu.cyzetlc.commentariis.Commentariis;
+import eu.cyzetlc.commentariis.Commentarii;
 import eu.cyzetlc.commentariis.service.button.annotation.ButtonSpecification;
 import eu.cyzetlc.commentariis.service.entities.Embed;
 import lombok.Getter;
@@ -41,7 +41,7 @@ public class ButtonHandler {
     public void sendEmbedWithButtons(Embed embed, List<Button> buttons, TextChannel tempChannel, boolean autoDelete) {
         LinkedList<net.dv8tion.jda.api.interactions.components.Button> list = new LinkedList<>();
         for (Button btn : buttons) {
-            list.add(Commentariis.getInstance().getButtonHandler().register(btn));
+            list.add(Commentarii.getInstance().getButtonHandler().register(btn));
         }
 
         if (tempChannel != null) {
