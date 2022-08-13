@@ -1,7 +1,10 @@
 package eu.cyzetlc.commentariis;
 
 import eu.cyzetlc.commentariis.commands.InfoCommand;
+import eu.cyzetlc.commentariis.commands.LogChannelCommand;
+import eu.cyzetlc.commentariis.listener.ButtonListener;
 import eu.cyzetlc.commentariis.listener.CommandListener;
+import eu.cyzetlc.commentariis.service.button.ButtonHandler;
 import eu.cyzetlc.commentariis.service.command.CommandHandler;
 import eu.cyzetlc.commentariis.service.json.JsonConfig;
 import lombok.Getter;
@@ -29,6 +32,8 @@ public class Commentariis {
     private JDA jda;
     // A variable that is used to store the CommandHandler object.
     private CommandHandler commandHandler;
+    // Used to store the ButtonHandler object.
+    private final ButtonHandler buttonHandler;
 
     /**
      * The main function is the entry point of the program.
@@ -42,6 +47,7 @@ public class Commentariis {
         instance = this;
 
         this.config = new JsonConfig("./config.json");
+        this.buttonHandler = new ButtonHandler();
 
         this.buildJDA();
         this.buildListeners();
@@ -53,6 +59,7 @@ public class Commentariis {
      */
     private void buildListeners() {
         this.jda.addEventListener(new CommandListener());
+        this.jda.addEventListener(new ButtonListener());
     }
 
     /**
@@ -61,6 +68,7 @@ public class Commentariis {
     private void buildCommands() {
         this.commandHandler = new CommandHandler();
         this.commandHandler.loadCommand(new InfoCommand());
+        this.commandHandler.loadCommand(new LogChannelCommand());
     }
 
     /**
