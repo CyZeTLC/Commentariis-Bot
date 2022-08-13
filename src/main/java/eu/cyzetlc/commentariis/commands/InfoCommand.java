@@ -17,7 +17,7 @@ public class InfoCommand extends Command {
     // This is the method that is called when the command is executed.
     public void onCommand(User user, SlashCommandEvent event, TextChannel channel, String[] args) {
         StringBuilder builder = new StringBuilder();
-        builder.append("__Author:__").append(" ").append("Tom").append(" ").append("Coombs");
+        builder.append("__Author:__").append(" ").append("CyZeTLC").append(" ").append("×").append(" ").append("Tom").append(" ").append("C.");
         builder.append("\n");
         builder.append("__Version:__").append(" ").append("v1.0");
 
