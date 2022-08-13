@@ -74,7 +74,7 @@ public class Embed {
         builder.setColor(color);
         builder.setTitle(title);
         builder.setDescription(content);
-        builder.setFooter("Bot by Tom Coombs", "https://avatars.githubusercontent.com/u/57322153?v=4");
+        builder.setFooter("Bot by CyZeTLC × Tom C.", "https://avatars.githubusercontent.com/u/57322153?v=4");
         return new Embed(builder);
     }
 }
