@@ -22,19 +22,19 @@ public class InfoCommand extends Command {
     // This is the method that is called when the command is executed.
     public void onCommand(User user, SlashCommandEvent event, TextChannel channel, String[] args) {
         StringBuilder builder = new StringBuilder();
-        builder.append("__Author:__").append(" ").append("CyZeTLC").append(" ").append("×").append(" ").append("Tom").append(" ").append("C.");
-        builder.append("\n");
-        builder.append("__Version:__").append(" ").append("v1.0");
-        builder.append("\n");
-        builder.append("__Gestartet:__").append(" ").append("<t:").append(Commentarii.getStated()/1000).append(":R>");
-        builder.append("\n");
-        builder.append("__Nutzer:__").append(" ").append(Commentarii.getInstance().getJda().getUsers().size());
-        builder.append("\n");
-        builder.append("__Server:__").append(" ").append(Commentarii.getInstance().getJda().getGuilds().size());
-        builder.append("\n");
-        builder.append("__Gateway Ping:__").append(" ").append(Commentarii.getInstance().getJda().getGatewayPing()).append("ms");
-        builder.append("\n");
-        builder.append("__API Anfragen:__").append(" ").append(Commentarii.getInstance().getJda().getResponseTotal());
+        builder.append("**Author:**").append("\n").append("CyZeTLC").append(" ").append("×").append(" ").append("Tom").append(" ").append("C.");
+        builder.append("\n\n");
+        builder.append("**Version:**").append("\n").append("v1.0");
+        builder.append("\n\n");
+        builder.append("**Gestartet:**").append("\n").append("<t:").append(Commentarii.getStated()/1000).append(":R>");
+        builder.append("\n\n");
+        builder.append("**Nutzer:**").append("\n").append(Commentarii.getInstance().getJda().getUsers().size());
+        builder.append("\n\n");
+        builder.append("**Server:**").append("\n").append(Commentarii.getInstance().getJda().getGuilds().size());
+        builder.append("\n\n");
+        builder.append("**Gateway Ping:**").append("\n").append(Commentarii.getInstance().getJda().getGatewayPing()).append("ms");
+        builder.append("\n\n");
+        builder.append("**API Anfragen:**").append("\n").append(Commentarii.getInstance().getJda().getResponseTotal());
 
         this.sendEmbedWithButtons(
                 Embed.getEmbed(

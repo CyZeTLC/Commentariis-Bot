@@ -6,6 +6,7 @@ import eu.cyzetlc.commentariis.service.button.Button;
 import eu.cyzetlc.commentariis.service.command.annotation.CommandSpecification;
 import eu.cyzetlc.commentariis.service.entities.Embed;
 import eu.cyzetlc.commentariis.service.entities.User;
+import eu.cyzetlc.commentariis.service.log.LogHandler;
 import lombok.Getter;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -97,8 +98,13 @@ public abstract class Command {
      * @param args The arguments of the command.
      */
     public void execute(User user, SlashCommandEvent event, TextChannel channel, String[] args) {
-        log.info(user.getJdaUser().getName() + "#" + user.getJdaUser().getDiscriminator() + " executed command /" + this.getCommand());
-
+        Commentarii.getInstance().getLogHandler().log(
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.command.executed.title"),
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.command.executed.content", user.getJdaUser().getAsMention(), event.getCommandString()),
+                LogHandler.LogLevel.INFO,
+                channel.getGuild().getIdLong(),
+                log
+        );
         this.tempChannel = channel;
         this.tempEvent = event;
 

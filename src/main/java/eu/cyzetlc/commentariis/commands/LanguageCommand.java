@@ -19,6 +19,7 @@ import java.awt.*;
 )
 public class LanguageCommand extends Command {
     @Override
+    // This method is called when the command is registered.
     public void initialize(CommandSpecification spec) {
         super.initialize(spec);
 

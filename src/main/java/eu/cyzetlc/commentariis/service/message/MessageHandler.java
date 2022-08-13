@@ -3,8 +3,11 @@ package eu.cyzetlc.commentariis.service.message;
 import eu.cyzetlc.commentariis.Commentarii;
 import eu.cyzetlc.commentariis.service.json.JSONObject;
 import lombok.Getter;
+import net.dv8tion.jda.api.entities.Guild;
 import org.jetbrains.annotations.NotNull;
 
+import javax.sql.rowset.CachedRowSet;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -18,6 +21,21 @@ public class MessageHandler {
 
     public MessageHandler() {
         this.obj = Commentarii.getInstance().getConfig().getObject().getJSONObject("messages");
+
+        try {
+            CachedRowSet rs = Commentarii.getInstance().getQueryHandler().createBuilder(
+                    "SELECT guild_id,language FROM settings"
+            ).executeQuerySync();
+
+            while (rs.next()) {
+                Guild guild = Commentarii.getInstance().getJda().getGuildById(rs.getLong("guild_id"));
+                if (guild != null) {
+                    this.guildLanguages.put(guild.getIdLong(), rs.getString("language"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void applyPrefix(String key, String prefixKey) {
@@ -26,6 +44,9 @@ public class MessageHandler {
 
     public void applyLanguage(long guildId, String languageKey) {
         if (this.languageKeys.contains(languageKey)) {
+            Commentarii.getInstance().getQueryHandler().createBuilder(
+                    "UPDATE settings SET language = ? WHERE guild_id = ?"
+            ).addParameters(Arrays.asList(languageKey, guildId)).executeUpdateAsync();
             this.guildLanguages.put(guildId, languageKey);
         }
     }

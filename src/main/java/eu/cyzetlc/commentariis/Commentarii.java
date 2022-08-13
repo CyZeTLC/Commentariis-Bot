@@ -1,5 +1,6 @@
 package eu.cyzetlc.commentariis;
 
+import eu.cyzetlc.commentariis.commands.GuildCommand;
 import eu.cyzetlc.commentariis.commands.InfoCommand;
 import eu.cyzetlc.commentariis.commands.LanguageCommand;
 import eu.cyzetlc.commentariis.commands.LogChannelCommand;
@@ -9,6 +10,8 @@ import eu.cyzetlc.commentariis.listener.JoinGuildListener;
 import eu.cyzetlc.commentariis.listener.LogListener;
 import eu.cyzetlc.commentariis.service.button.ButtonHandler;
 import eu.cyzetlc.commentariis.service.command.CommandHandler;
+import eu.cyzetlc.commentariis.service.database.mysql.MySQLCredentials;
+import eu.cyzetlc.commentariis.service.database.mysql.QueryHandler;
 import eu.cyzetlc.commentariis.service.json.JsonConfig;
 import eu.cyzetlc.commentariis.service.log.LogHandler;
 import eu.cyzetlc.commentariis.service.message.MessageHandler;
@@ -43,11 +46,13 @@ public class Commentarii {
     // A variable that is used to store the CommandHandler object.
     private CommandHandler commandHandler;
     // Used to store the ButtonHandler object.
-    private final ButtonHandler buttonHandler;
+    private ButtonHandler buttonHandler;
     // Used to store the LogHandler object.
-    private final LogHandler logHandler;
+    private LogHandler logHandler;
     // Used to store the MessageHandler object.
-    private final MessageHandler messageHandler;
+    private MessageHandler messageHandler;
+    // A variable that is used to store the QueryHandler object.
+    private QueryHandler queryHandler;
 
     /**
      * The main function is the entry point of the program.
@@ -62,16 +67,34 @@ public class Commentarii {
         stated = System.currentTimeMillis();
 
         this.config = new JsonConfig("./config.json");
-        this.buttonHandler = new ButtonHandler();
-        this.logHandler = new LogHandler();
-        this.messageHandler = new MessageHandler();
-        this.messageHandler.applyPrefix("commentarii", "commentarii.prefix");
 
         this.buildJDA();
+        this.buildMySQLConnection();
+        this.buildHandlers();
         this.buildListeners();
         this.buildCommands();
 
         new LogListener().onReady(new ReadyEvent(this.jda, 0));
+    }
+
+    /**
+     * It creates the handlers for the plugin
+     */
+    private void buildHandlers() {
+        this.buttonHandler = new ButtonHandler();
+        this.logHandler = new LogHandler();
+        this.messageHandler = new MessageHandler();
+        this.messageHandler.applyPrefix("commentarii", "commentarii.prefix");
+    }
+
+    /**
+     * It creates a new QueryHandler object with the credentials from the config file, and then creates a table if it
+     * doesn't exist
+     */
+    private void buildMySQLConnection() {
+        this.queryHandler = new QueryHandler(new JsonConfig(this.config.getObject().getJSONObject("mysql")).load(MySQLCredentials.class));
+        this.queryHandler.createBuilder("CREATE TABLE IF NOT EXISTS logs(numeric_id INT UNIQUE AUTO_INCREMENT, timestamp BIGINT, thread VARCHAR(64), guild_id BIGINT, text TEXT);").executeUpdateSync();
+        this.queryHandler.createBuilder("CREATE TABLE IF NOT EXISTS settings(numeric_id INT UNIQUE AUTO_INCREMENT, guild_id BIGINT, language VARCHAR(3), log_channel BIGINT);").executeUpdateSync();
     }
 
     /**
@@ -92,6 +115,7 @@ public class Commentarii {
         this.commandHandler.loadCommand(new LanguageCommand());
         this.commandHandler.loadCommand(new InfoCommand());
         this.commandHandler.loadCommand(new LogChannelCommand());
+        this.commandHandler.loadCommand(new GuildCommand());
     }
 
     /**

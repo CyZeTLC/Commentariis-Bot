@@ -15,4 +15,11 @@ public @interface ButtonSpecification {
     String label() default "";
 
     ButtonStyle style() default ButtonStyle.PRIMARY;
+
+    ButtonLabelType type() default ButtonLabelType.TEXT;
+
+    enum ButtonLabelType {
+        MESSAGE_KEY,
+        TEXT;
+    }
 }

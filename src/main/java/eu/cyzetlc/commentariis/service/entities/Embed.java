@@ -53,6 +53,16 @@ public class Embed {
     }
 
     /**
+     * > This function appends a description to the builder
+     *
+     * @param description The description of the test case.
+     */
+    public Embed appendDescriptions(String description) {
+        this.builder.appendDescription(description);
+        return this;
+    }
+
+    /**
      * It returns the message embed
      *
      * @return A MessageEmbed object
