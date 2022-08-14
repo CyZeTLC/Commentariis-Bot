@@ -53,12 +53,43 @@ public class Embed {
     }
 
     /**
-     * > This function appends a description to the builder
+     * It appends a description to the embed
      *
-     * @param description The description of the test case.
+     * @param description The description of the embed.
+     * @return The Embed object
      */
     public Embed appendDescriptions(String description) {
         this.builder.appendDescription(description);
+        return this;
+    }
+
+    /**
+     * It adds a field to the embed
+     *
+     * @param title The title of the field.
+     * @param content The content of the field. This is a string, and it may not contain any markup.
+     * @return The Embed object.
+     */
+    public Embed addField(String title, String content) {
+        this.builder.addField(title, content, false);
+        return this;
+    }
+
+    /**
+     * Adds a field to the embed
+     *
+     * @param title The title of the field.
+     * @param content The text of the field.
+     * @param inline If true, the field will be displayed inline.
+     * @return The Embed object.
+     */
+    public Embed addField(String title, String content, boolean inline) {
+        this.builder.addField(title, content, inline);
+        return this;
+    }
+
+    public Embed addBlankField(boolean inline) {
+        this.builder.addBlankField(inline);
         return this;
     }
 

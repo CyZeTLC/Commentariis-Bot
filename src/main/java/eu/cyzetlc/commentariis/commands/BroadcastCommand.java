@@ -29,7 +29,9 @@ public class BroadcastCommand extends Command {
     public void onCommand(User user, SlashCommandInteractionEvent event, TextChannel channel, String[] args) {
         if (user.getJdaUser().getId().equals("516929484469829632")) {
             if (event.getOption("text") != null) {
-                String text = event.getOption("text").getAsString();
+                String text = event.getOption("text").getAsString()
+                        .replaceAll("%time%", "<t:" + (System.currentTimeMillis()/1000) + ":R>")
+                        .replaceAll("%n", "\n");
 
                 for (Guild guild : Commentarii.getInstance().getJda().getGuilds()) {
                     Commentarii.getInstance().getLogHandler().getLogChannelOfGuild(guild.getIdLong()).sendMessageEmbeds(

@@ -1,11 +1,17 @@
 package eu.cyzetlc.commentariis.listener;
 
 import eu.cyzetlc.commentariis.Commentarii;
+import eu.cyzetlc.commentariis.service.audio.PlayerHandler;
 import eu.cyzetlc.commentariis.service.log.LogHandler;
 import lombok.Getter;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.audio.AudioSendHandler;
+import net.dv8tion.jda.api.audio.SpeakingMode;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
+import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
+import net.dv8tion.jda.api.events.channel.update.*;
 import net.dv8tion.jda.api.events.guild.invite.GenericGuildInviteEvent;
 import net.dv8tion.jda.api.events.guild.invite.GuildInviteCreateEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
@@ -152,9 +158,102 @@ public class LogListener extends ListenerAdapter {
     }
 
     @Override
+    // A method that is called when a user joins a voice channel.
     public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
-        AudioChannel connectedChannel = event.getMember().getVoiceState().getChannel();
-        AudioManager audioManager = event.getGuild().getAudioManager();
-        audioManager.openAudioConnection(connectedChannel);
+        if (!event.getMember().getId().equals(Commentarii.getInstance().getJda().getSelfUser().getId())) {
+            AudioChannel connectedChannel = event.getMember().getVoiceState().getChannel();
+            AudioManager audioManager = event.getGuild().getAudioManager();
+            audioManager.openAudioConnection(connectedChannel);
+            audioManager.setSpeakingMode(SpeakingMode.VOICE);
+
+            PlayerHandler.getInstance()
+                    .loadAndPlay(Commentarii.getInstance().getLogHandler().getLogChannelOfGuild(event.getGuild().getIdLong()),
+                            "https://www.youtube.com/watch?v=ZevEW7zwslA");
+        }
+    }
+
+
+    /*
+     * Channel Events
+     */
+
+    @Override
+    public void onChannelCreate(@NotNull ChannelCreateEvent event) {
+        Commentarii.getInstance().getLogHandler().log(
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_create.title"),
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_create.content", event.getChannel().getAsMention()),
+                LogHandler.LogLevel.INFO,
+                event.getGuild().getIdLong()
+        );
+    }
+
+    @Override
+    public void onChannelDelete(@NotNull ChannelDeleteEvent event) {
+        Commentarii.getInstance().getLogHandler().log(
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_delete.title"),
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_delete.content", "**" + event.getChannel().getName() + "**"),
+                LogHandler.LogLevel.INFO,
+                event.getGuild().getIdLong()
+        );
+    }
+
+    @Override
+    public void onChannelUpdateName(@NotNull ChannelUpdateNameEvent event) {
+        Commentarii.getInstance().getLogHandler().log(
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_name.title"),
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_name.content", event.getChannel().getAsMention(), event.getNewValue(), event.getOldValue()),
+                LogHandler.LogLevel.INFO,
+                event.getGuild().getIdLong()
+        );
+    }
+
+    @Override
+    public void onChannelUpdateNSFW(@NotNull ChannelUpdateNSFWEvent event) {
+        Commentarii.getInstance().getLogHandler().log(
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_nsfw.title"),
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_nsfw.content", event.getChannel().getAsMention()),
+                LogHandler.LogLevel.INFO,
+                event.getGuild().getIdLong()
+        );
+    }
+
+    @Override
+    public void onChannelUpdatePosition(@NotNull ChannelUpdatePositionEvent event) {
+        Commentarii.getInstance().getLogHandler().log(
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_position.title"),
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_position.content", event.getChannel().getAsMention(), event.getNewValue()+"", event.getOldValue()+""),
+                LogHandler.LogLevel.INFO,
+                event.getGuild().getIdLong()
+        );
+    }
+
+    @Override
+    public void onChannelUpdateSlowmode(@NotNull ChannelUpdateSlowmodeEvent event) {
+        Commentarii.getInstance().getLogHandler().log(
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_slowmode.title"),
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_slowmode.content", event.getChannel().getAsMention(), event.getNewValue()+"", event.getOldValue()+""),
+                LogHandler.LogLevel.INFO,
+                event.getGuild().getIdLong()
+        );
+    }
+
+    @Override
+    public void onChannelUpdateType(@NotNull ChannelUpdateTypeEvent event) {
+        Commentarii.getInstance().getLogHandler().log(
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_type.title"),
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_type.content", event.getChannel().getAsMention(), event.getNewValue().name(), event.getOldValue().name()),
+                LogHandler.LogLevel.INFO,
+                event.getGuild().getIdLong()
+        );
+    }
+
+    @Override
+    public void onChannelUpdateUserLimit(@NotNull ChannelUpdateUserLimitEvent event) {
+        Commentarii.getInstance().getLogHandler().log(
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_limit.title"),
+                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.channel_limit.content", event.getChannel().getAsMention(), event.getNewValue()+"", event.getOldValue()+""),
+                LogHandler.LogLevel.INFO,
+                event.getGuild().getIdLong()
+        );
     }
 }
