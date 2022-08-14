@@ -1,15 +1,11 @@
 package eu.cyzetlc.commentariis.service.apply;
 
 import eu.cyzetlc.commentariis.Commentarii;
-import eu.cyzetlc.commentariis.service.entities.Embed;
 import lombok.Getter;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.sql.rowset.CachedRowSet;
-import java.awt.*;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;

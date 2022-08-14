@@ -2,7 +2,6 @@ package eu.cyzetlc.commentariis.service.command;
 
 import com.google.common.base.Joiner;
 import eu.cyzetlc.commentariis.Commentarii;
-import eu.cyzetlc.commentariis.service.button.Button;
 import eu.cyzetlc.commentariis.service.command.annotation.CommandSpecification;
 import eu.cyzetlc.commentariis.service.entities.Embed;
 import eu.cyzetlc.commentariis.service.entities.User;
@@ -13,7 +12,6 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
@@ -321,7 +319,7 @@ public abstract class Command {
      * @param embed The embed you want to send.
      * @param buttons A list of buttons to be added to the embed.
      */
-    public void sendEmbedWithButtons(Embed embed, List<Button> buttons) {
+    public void sendEmbedWithButtons(Embed embed, List<eu.cyzetlc.commentariis.service.button.Button> buttons) {
         this.sendEmbedWithButtons(embed, buttons, true, false);
     }
 
@@ -332,9 +330,9 @@ public abstract class Command {
      * @param buttons A list of buttons to be added to the embed.
      * @param autoDelete If the message should be deleted after a certain amount of time.
      */
-    public void sendEmbedWithButtons(Embed embed, List<Button> buttons, boolean isReply, boolean autoDelete) {
+    public void sendEmbedWithButtons(Embed embed, List<eu.cyzetlc.commentariis.service.button.Button> buttons, boolean isReply, boolean autoDelete) {
         LinkedList<net.dv8tion.jda.api.interactions.components.buttons.Button> list = new LinkedList<>();
-        for (Button btn : buttons) {
+        for (eu.cyzetlc.commentariis.service.button.Button btn : buttons) {
             list.add(Commentarii.getInstance().getButtonHandler().register(btn));
         }
 

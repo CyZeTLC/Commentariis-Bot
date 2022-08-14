@@ -3,7 +3,6 @@ package eu.cyzetlc.commentariis.commands;
 import eu.cyzetlc.commentariis.Commentarii;
 import eu.cyzetlc.commentariis.buttons.InviteMeButton;
 import eu.cyzetlc.commentariis.buttons.VisiteWebsiteButton;
-import eu.cyzetlc.commentariis.modals.ApplyModal;
 import eu.cyzetlc.commentariis.service.command.Command;
 import eu.cyzetlc.commentariis.service.command.annotation.CommandSpecification;
 import eu.cyzetlc.commentariis.service.entities.Embed;

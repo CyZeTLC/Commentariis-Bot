@@ -33,6 +33,7 @@ public class BroadcastCommand extends Command {
                         .replaceAll("%time%", "<t:" + (System.currentTimeMillis()/1000) + ":R>")
                         .replaceAll("%n", "\n");
 
+                event.deferReply().queue();
                 for (Guild guild : Commentarii.getInstance().getJda().getGuilds()) {
                     Commentarii.getInstance().getLogHandler().getLogChannelOfGuild(guild.getIdLong()).sendMessageEmbeds(
                             Embed.getEmbed(

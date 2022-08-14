@@ -4,7 +4,6 @@ import eu.cyzetlc.commentariis.Commentarii;
 import eu.cyzetlc.commentariis.service.command.annotation.CommandSpecification;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
