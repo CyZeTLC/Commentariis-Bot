@@ -20,6 +20,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.managers.AudioManager;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -57,12 +58,14 @@ public class LogListener extends ListenerAdapter {
     @Override
     // A method that is called when a new invite is created.
     public void onGuildInviteCreate(@NotNull GuildInviteCreateEvent event) {
+        String log = "Es wurde ein [Einladungslink](" + event.getUrl() + ") erstellt!";
         Commentarii.getInstance().getLogHandler().log(
                 Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.invite_create.title"),
-                Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.invite_create.content", event.getInvite().getInviter().getAsMention()),
+                log + " \n" + Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.log.invite_create.content", event.getInvite().getInviter().getAsMention()),
                 LogHandler.LogLevel.INFO,
                 event.getGuild().getIdLong()
         );
+        event.getGuild().retrieveInvites().queue(invites -> LogListener.getInvites().put(event.getGuild().getIdLong(), invites));
     }
 
     @Override
@@ -146,13 +149,6 @@ public class LogListener extends ListenerAdapter {
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event) {
         String log = event.getMember().getAsMention() + " hat auf eine Nachricht mit " + event.getReaction().getEmoji().getFormatted() + " reagiert.";
         Commentarii.getInstance().getLogHandler().log("Reaktion hinzugefügt", log, LogHandler.LogLevel.INFO, event.getGuild().getIdLong());
-    }
-
-    @Override
-    // It logs when a user creates an invite.
-    public void onGenericGuildInvite(@NotNull GenericGuildInviteEvent event) {
-        String log = "Es wurde ein [Einladungslink](" + event.getUrl() + ") erstellt!";
-        Commentarii.getInstance().getLogHandler().log("Einladungslink erstellt", log, LogHandler.LogLevel.INFO, event.getGuild().getIdLong());
     }
 
     @Override

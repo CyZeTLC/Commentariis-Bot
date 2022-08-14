@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.rowset.CachedRowSet;
 import java.awt.*;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
@@ -86,19 +87,19 @@ public class LogHandler {
 
         switch (level.level) {
             case 0 -> {
-                logger.info(guildName + log);
+                logger.info(guildName + log.replaceAll("\n",""));
                 logColor = Color.GREEN;
             }
             case 1 -> {
-                logger.warn(guildName + log);
+                logger.warn(guildName + log.replaceAll("[^a-zA-Z0-9\\\\s.-]",""));
                 logColor = Color.ORANGE;
             }
             case 2 -> {
-                logger.debug(guildName + log);
+                logger.debug(guildName + log.replaceAll("[^a-zA-Z0-9\\\\s.-]",""));
                 logColor = Color.YELLOW;
             }
             case 3 -> {
-                logger.error(guildName + log);
+                logger.error(guildName + log.replaceAll("[^a-zA-Z0-9\\\\s.-]",""));
                 logColor = Color.RED;
             }
             default -> {
