@@ -1,0 +1,21 @@
+{
+  "name": "commentarii-web",
+  "version": "1.0.0",
+  "description": "Panel of Commentarii-Bot",
+  "main": "index.js",
+  "scripts": {
+    "install": "npm install -D tailwindcss@latest autoprefixer@latest postcss-cli",
+    "build": "postcss ./src/tailwind.css -o ./dist/assets/tailwind.css -w --verbose",
+    "prod": "NODE_ENV=production postcss ./src/tailwind.css -o ./dist/assets/tailwind.css"
+  },
+  "author": "Tom Coombs (CyZeTLC)",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.7",
+    "postcss-cli": "^9.1.0",
+    "tailwindcss": "^3.0.24"
+  },
+  "dependencies": {
+    "@tailwindcss/forms": "^0.5.2"
+  }
+}

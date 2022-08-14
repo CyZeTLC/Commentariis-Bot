@@ -1,0 +1,341 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+hr {
+    @apply border-0 border-b-2 border-neutral-700 my-4;
+}
+
+a:not(.button):not(.side-button):not(#logout) {
+    @apply hover:text-blue-600 cursor-pointer transition duration-150 ease-in-out;
+}
+
+.h-13 {
+    height: 3.25rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.marked {
+    @apply text-blue-400;
+}
+
+.input {
+    @apply w-full p-2 border-2 border-gray-300 rounded-lg shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-black;
+}
+
+input:focus, textarea:focus, select:focus{
+    outline: none;
+}
+
+/*
+* Cards
+*/
+.card {
+    @apply bg-gray-100 shadow-lg rounded-lg overflow-hidden max-h-full max-w-2xl p-4;
+}
+
+.card-title {
+    @apply text-black text-2xl font-bold;
+}
+
+.info-box-success {
+    @apply w-full bg-green-400 text-green-200 font-medium p-4 rounded-md shadow-sm;
+}
+
+.info-box-fail {
+    @apply w-full bg-red-400 text-red-200 font-medium p-4 rounded-md shadow-sm;
+}
+
+/*
+* Buttons
+*/
+.button {
+    @apply shadow-lg transition duration-150 ease-in-out px-4 py-2 bg-blue-700 hover:bg-blue-600 hover:scale-105 font-semibold rounded-lg text-sm cursor-pointer uppercase;
+}
+
+.nav-button {
+    /*@apply shadow-sm transition duration-150 ease-in-out mx-2 text-lg px-2 py-1 bg-indigo-300 hover:bg-indigo-400 font-semibold rounded-sm;*/
+    /*@apply shadow-sm transition duration-150 ease-in-out mx-2 text-lg px-2 py-1 bg-blue-700 hover:bg-blue-600 font-semibold rounded-lg text-white uppercase;*/
+    @apply transition duration-150 ease-in-out mx-2 text-lg px-2 py-1 hover:text-blue-600 hover:shadow-sm font-semibold uppercase;
+}
+
+.side-button {
+    @apply flex my-1 transition duration-150 ease-in-out rounded-lg text-left w-full hover:bg-opacity-30 hover:bg-neutral-500 p-3 text-neutral-500 hover:text-white place-items-center;
+}
+
+.side-button.active {
+    @apply border-r-2 border-r-white bg-opacity-30 bg-neutral-500 text-white;
+}
+
+.tab-button {
+    @apply text-black px-2 mx-2 transition duration-150 ease-in-out font-semibold text-sm border-b-2 uppercase;
+}
+
+.tab-button:not(.active) {
+    @apply border-b-blue-600;
+}
+
+.active {
+    @apply border-b-orange-400;
+}
+
+/*
+* Dropdown
+*/
+.dropdown-menu {
+    left: auto;
+    overflow: hidden;
+    transition-duration: .3s !important;
+    background-position: right-bottom;
+    background-repeat: no-repeat;
+    top: auto;
+    background-color: #fff;
+    border: 0;
+    color: #000;
+    border-style: solid;
+    border-color: #eee;
+    border-width: 1px !important;
+    margin: 0;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 100%);
+    padding: 10px;
+    display: none;
+    position: absolute;
+}
+
+.dropdown-content {
+    padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.dropdown-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+/*
+* Sidebar
+*/
+.sidebar button {
+    @apply mt-5 p-3 border-y-2 border-gray-300 text-white font-semibold uppercase cursor-pointer hover:bg-gray-600 hover:text-gray-300 w-full;
+}
+
+/*
+* Table
+*/
+table {
+    @apply shadow-sm;
+}
+
+thead tr {
+    @apply bg-blue-600 text-center;
+}
+
+th {
+    @apply text-lg font-semibold text-white py-2 lg:py-5 px-3 lg:px-4;
+}
+
+tr:nth-child(even) {
+    @apply bg-gray-300;
+}
+
+td {
+    @apply text-center text-neutral-800 font-medium text-base py-5 px-2 border-b border-b-neutral-400;
+}
+
+/*
+* User Selection
+*/
+::-moz-selection {
+    background: #93c5fd;
+}
+
+::selection {
+    background: #93c5fd;
+}
+
+/*
+* Other Styles
+*/
+:root {
+    --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.tab {
+    overflow: hidden;
+}
+
+.tab-content {
+    max-height: 0;
+    transition: all 0.5s;
+}
+
+input:checked+.tab-label .test {
+    background-color: #000;
+}
+
+input:checked+.tab-label .test svg {
+    transform: rotate(180deg);
+    stroke: #fff;
+}
+
+input:checked+.tab-label::after {
+    transform: rotate(90deg);
+}
+
+input:checked~.tab-content {
+    max-height: 100vh;
+}
+
+.reveal {
+    position: relative;
+    transform: translateY(150px);
+    opacity: 0;
+    transition: 1s all ease;
+}
+
+.reveal.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.hover-trigger .hover-target {
+    display: block;
+    visibility: hidden;
+    transition: opacity 1s ease-in-out;
+    opacity: 0;
+}
+
+.hover-trigger:hover .hover-target {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.lds-ring {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.lds-ring div {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    margin: 8px;
+    border: 8px solid #fff;
+    border-radius: 50%;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: #fff transparent transparent transparent;
+}
+
+.lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+}
+
+.lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+}
+
+.lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+}
+
+@keyframes lds-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+
+.lds-ellipsis {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
+
+.lds-ellipsis div {
+    position: absolute;
+    top: 33px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #262626;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.lds-ellipsis div:nth-child(1) {
+    left: 8px;
+    animation: lds-ellipsis1 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(2) {
+    left: 8px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(3) {
+    left: 32px;
+    animation: lds-ellipsis2 0.6s infinite;
+}
+
+.lds-ellipsis div:nth-child(4) {
+    left: 56px;
+    animation: lds-ellipsis3 0.6s infinite;
+}
+
+@keyframes lds-ellipsis1 {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes lds-ellipsis3 {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0);
+    }
+}
+
+@keyframes lds-ellipsis2 {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    100% {
+        transform: translate(24px, 0);
+    }
+}
+
+
+@media (min-width: 100px) and (max-width: 1023px) {
+    .xs\:hidden {
+        display: none;
+    }
+
+    .xs\:grid {
+        display: grid;
+    }
+}
