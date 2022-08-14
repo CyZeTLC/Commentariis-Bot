@@ -11,6 +11,7 @@ import eu.cyzetlc.commentariis.service.json.JsonConfig;
 import eu.cyzetlc.commentariis.service.log.LogHandler;
 import eu.cyzetlc.commentariis.service.message.MessageHandler;
 import eu.cyzetlc.commentariis.service.modal.ModalHandler;
+import eu.cyzetlc.commentariis.service.verify.VerifyHandler;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -55,6 +56,8 @@ public class Commentarii {
     private ModalHandler modalHandler;
     // A variable that is used to store the ApplyHandler object.
     private ApplyHandler applyHandler;
+    // A variable that is used to store the VerifyHandler object.
+    private VerifyHandler verifyHandler;
 
     /**
      * The main function is the entry point of the program.
@@ -83,6 +86,7 @@ public class Commentarii {
      * It creates the handlers for the plugin
      */
     private void buildHandlers() {
+        this.verifyHandler = new VerifyHandler();
         this.applyHandler = new ApplyHandler();
         this.buttonHandler = new ButtonHandler();
         this.modalHandler = new ModalHandler();
@@ -102,7 +106,7 @@ public class Commentarii {
     private void buildMySQLConnection() {
         this.queryHandler = new QueryHandler(new JsonConfig(this.config.getObject().getJSONObject("mysql")).load(MySQLCredentials.class));
         this.queryHandler.createBuilder("CREATE TABLE IF NOT EXISTS logs(numeric_id INT UNIQUE AUTO_INCREMENT, timestamp BIGINT, thread VARCHAR(64), guild_id BIGINT, text TEXT);").executeUpdateSync();
-        this.queryHandler.createBuilder("CREATE TABLE IF NOT EXISTS settings(numeric_id INT UNIQUE AUTO_INCREMENT, guild_id BIGINT, language VARCHAR(3), log_channel BIGINT, apply_channel BIGINT);").executeUpdateSync();
+        this.queryHandler.createBuilder("CREATE TABLE IF NOT EXISTS settings(numeric_id INT UNIQUE AUTO_INCREMENT, guild_id BIGINT, language VARCHAR(3), log_channel BIGINT, apply_channel BIGINT, verify_channel BIGINT, verify_webhook BIGINT, verify_webhook_url TEXT, verify_role BIGINT,);").executeUpdateSync();
     }
 
     /**
@@ -114,6 +118,7 @@ public class Commentarii {
         this.jda.addEventListener(new JoinGuildListener());
         this.jda.addEventListener(new LogListener());
         this.jda.addEventListener(new ModalListener());
+        this.jda.addEventListener(new VerifyListener());
     }
 
     /**
@@ -128,6 +133,7 @@ public class Commentarii {
         this.commandHandler.loadCommand(new BroadcastCommand());
         this.commandHandler.loadCommand(new ApplyCommand());
         this.commandHandler.loadCommand(new ApplyChannelCommand());
+        this.commandHandler.loadCommand(new SetupVerifyCommand());
     }
 
     /**
