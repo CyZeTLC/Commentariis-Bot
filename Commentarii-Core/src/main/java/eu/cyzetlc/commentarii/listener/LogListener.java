@@ -45,7 +45,6 @@ public class LogListener extends ListenerAdapter {
                     LogHandler.LogLevel.INFO,
                     guild.getIdLong()
             );
-            System.out.println(guild.getOwner().getUser().getAsTag());
         }
     }
 

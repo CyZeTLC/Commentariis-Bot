@@ -10,7 +10,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.rowset.CachedRowSet;
 import java.awt.*;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 
@@ -22,7 +26,7 @@ public class LogHandler {
     // Creating a new LinkedHashMap with the key being a Long and the value being a TextChannel.
     private final LinkedHashMap<Long, TextChannel> logChannels = new LinkedHashMap<>();
 
-    public LogHandler() {
+    public LogHandler() throws IOException {
         try {
             CachedRowSet rs = Commentarii.getInstance().getQueryHandler().createBuilder(
                     "SELECT guild_id,log_channel FROM settings"
@@ -36,6 +40,24 @@ public class LogHandler {
             }
         } catch (SQLException | InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * It reads the contents of the latest.log file, writes it to a new file with the current date and time as the file
+     * name, and then clears the latest.log file
+     */
+    public static void storeLogs() throws IOException {
+        Path path = Path.of("./logs/latest.log");
+        FileWriter latestFile = new FileWriter("./logs/latest.log");
+        FileWriter logFile = new FileWriter("./logs/" + LocalDateTime.now() + ".log");
+        try {
+            String everything = Files.readString(path);
+            logFile.write(everything);
+            latestFile.write("");
+        } finally {
+            logFile.close();
+            latestFile.close();
         }
     }
 
@@ -159,6 +181,7 @@ public class LogHandler {
         ERROR(3);
 
 
+        // A variable that is used to determine the color and level of the log.
         public final int level;
 
         LogLevel(int level) {

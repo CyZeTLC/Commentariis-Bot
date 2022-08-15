@@ -20,10 +20,12 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.security.auth.login.LoginException;
+import java.io.IOException;
 import java.util.Arrays;
 
 @Getter
@@ -62,12 +64,13 @@ public class Commentarii {
     /**
      * The main function is the entry point of the program.
      */
-    public static void main(String[] args) throws LoginException, InterruptedException {
+    public static void main(String[] args) throws LoginException, InterruptedException, IOException {
+        LogHandler.storeLogs();
         log.info("Initializing Commentarii-Instance");
         instance = new Commentarii();
     }
 
-    private Commentarii() throws LoginException, InterruptedException {
+    private Commentarii() throws LoginException, InterruptedException, IOException {
         instance = this;
         stated = System.currentTimeMillis();
 
@@ -85,7 +88,7 @@ public class Commentarii {
     /**
      * It creates the handlers for the plugin
      */
-    private void buildHandlers() {
+    private void buildHandlers() throws IOException {
         this.verifyHandler = new VerifyHandler();
         this.applyHandler = new ApplyHandler();
         this.buttonHandler = new ButtonHandler();
@@ -141,10 +144,10 @@ public class Commentarii {
      * It builds the JDA object and sets the activity
      */
     private void buildJDA() throws LoginException, InterruptedException {
-        System.out.println(this.config.getObject().getString("token"));
         this.jdaBuilder = JDABuilder.create(this.config.getObject().getString("token"), GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_INVITES, GatewayIntent.GUILD_VOICE_STATES);
         this.jdaBuilder.setActivity(Activity.of(Activity.ActivityType.valueOf(this.config.getObject().getString("activityType")), this.config.getObject().getString("activityContent")));
         this.jdaBuilder.enableIntents(Arrays.asList(GatewayIntent.values()));
+        this.jdaBuilder.disableCache(CacheFlag.EMOJI, CacheFlag.STICKER);
         this.jda = this.jdaBuilder.build().awaitReady();
 
         log.info("Invite me: " + this.jda.getInviteUrl(Permission.ADMINISTRATOR));

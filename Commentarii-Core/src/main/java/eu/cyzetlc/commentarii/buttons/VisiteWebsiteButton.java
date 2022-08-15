@@ -19,7 +19,7 @@ public class VisiteWebsiteButton extends Button {
     @Override
     // The URL that is displayed when the button is clicked.
     public String getUrl() {
-        return "https://github.com/CyZeTLC/Commentariis-Bot";
+        return "https://github.com/CyZeTLC/Commentarii-Bot";
     }
 
     @Override
