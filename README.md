@@ -1,4 +1,4 @@
-# Commentariis Bot
+# Commentarii Bot
 
 A simple Discord bot to log everything important on your discord server.
 
