@@ -8,7 +8,7 @@
     "build": "postcss ./src/tailwind.css -o ./dist/assets/tailwind.css -w --verbose",
     "prod": "NODE_ENV=production postcss ./src/tailwind.css -o ./dist/assets/tailwind.css"
   },
-  "author": "Tom Coombs (CyZeTLC)",
+  "author": "Tom C. (CyZeTLC)",
   "license": "ISC",
   "devDependencies": {
     "autoprefixer": "^10.4.7",
