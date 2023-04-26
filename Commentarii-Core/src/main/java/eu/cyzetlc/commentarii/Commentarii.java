@@ -71,6 +71,7 @@ public class Commentarii {
         if (args.length > 0) {
             LogHandler.storeLogs();
         }
+
         log.info("Initializing Commentarii-Instance");
         instance = new Commentarii();
     }
@@ -146,6 +147,7 @@ public class Commentarii {
         this.commandHandler.loadCommand(new PlayCommand());
         this.commandHandler.loadCommand(new StopCommand());
         this.commandHandler.loadCommand(new SkipCommand());
+        this.commandHandler.loadCommand(new PingCommand());
     }
 
     /**
