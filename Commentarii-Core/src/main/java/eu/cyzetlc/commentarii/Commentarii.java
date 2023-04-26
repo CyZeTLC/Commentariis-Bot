@@ -147,6 +147,7 @@ public class Commentarii {
         this.commandHandler.loadCommand(new PlayCommand());
         this.commandHandler.loadCommand(new StopCommand());
         this.commandHandler.loadCommand(new SkipCommand());
+        this.commandHandler.loadCommand(new PingCommand());
     }
 
     /**
