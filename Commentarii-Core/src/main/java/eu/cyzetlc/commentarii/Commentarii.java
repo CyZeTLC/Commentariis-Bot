@@ -71,6 +71,7 @@ public class Commentarii {
         if (args.length > 0) {
             LogHandler.storeLogs();
         }
+
         log.info("Initializing Commentarii-Instance");
         instance = new Commentarii();
     }
