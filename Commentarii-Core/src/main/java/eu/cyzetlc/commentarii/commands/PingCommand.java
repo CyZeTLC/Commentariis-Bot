@@ -39,6 +39,7 @@ public class PingCommand extends Command {
             e.printStackTrace();
         }
         embed.addThumbnail("https://img.cyzetlc.eu/PTB9GOgooh");
+        this.sendEmbed(embed);
     }
 
     private Duration requestServer(String host) throws IOException, InterruptedException {
