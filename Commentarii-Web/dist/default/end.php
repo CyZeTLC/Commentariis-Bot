@@ -4,6 +4,7 @@ if (isset($_SESSION['current_page']) && $_SESSION['current_page'] != "login") {
 }
 ?>
 </body>
+<script src="https://unpkg.com/@themesberg/flowbite@latest/dist/flowbite.bundle.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" async></script>
 <?php
 if (isset($_SESSION['current_page']) && $_SESSION['current_page'] != "login") {

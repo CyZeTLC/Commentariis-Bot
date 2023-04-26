@@ -8,7 +8,7 @@ if (isset($_POST['submit'])) {
 
     $stmt = $pdo->prepare("SELECT * FROM accounts WHERE username = ?");
     $stmt->execute(array($username));
-    
+
     if ($stmt->rowCount() == 1) {
         $row = $stmt->fetch();
         if (password_verify($password, $row['password'])) {
@@ -52,7 +52,8 @@ require '../../default/header.php';
             <img class="mx-auto h-12 w-auto" src="https://img.cyzetlc.eu/PTB9GOgooh" alt="Logo" />
             <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">Melde dich an</h2>
             <p class="mt-2 text-center text-sm text-gray-600 max-w">
-                Um fortzufahren, musst du dich anmelden!
+                Nocht nicht registriert?
+                <a href="https://commentarii.cyzetlc.eu/register/" class="default text-indigo-600 hover:text-indigo-500">Registrieren</a>
             </p>
         </div>
         <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10">
@@ -75,7 +76,7 @@ require '../../default/header.php';
                             $stmt->execute(array(time(), $row['uid']));
 
                             echo "<div class='info-box-success mb-2'>Du wurdest erfolreich angemeldet!<br>Bitte warte einen Augenblick..</div>";
-                            echo "<script>setTimeout(function(){window.location.href='" . "https://intern.cyzetlc.eu" . "'}, 3500);</script>";
+                            echo "<script>setTimeout(function(){window.location.href='" . "https://commentarii.cyzetlc.eu" . "'}, 3500);</script>";
                         } else {
                             echo "<div class='info-box-fail mb-2'>Benutzername und Passwort stimmen nicht überein!</div>";
                         }
@@ -110,6 +111,12 @@ require '../../default/header.php';
                         <button type="submit" name="submit" class="button w-full">Anmelden</button>
                     </div>
                 </form>
+                <hr>
+                <div>
+                    <button onclick="window.location.href = 'https://discord.com/oauth2/authorize?client_id=1007778519717269516&redirect_uri=https%3A%2F%2Fcommentarii.cyzetlc.eu%2Frest%2F%3Fdiscord=true&response_type=code&scope=identify connections guilds'" class="button w-full">
+                        <i class="fa-brands fa-discord mr-2"></i> Mit Discord anmelden
+                    </button>
+                </div>
             </div>
         </div>
         <div class="sm:mx-auto sm:w-full sm:max-w-md z-10">

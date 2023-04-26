@@ -13,7 +13,9 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class PlayerHandler {
     // A variable that is used to store the instance of the PlayerHandler class.
@@ -54,7 +56,7 @@ public class PlayerHandler {
      * @param channel The channel to send the message to.
      * @param trackUrl The URL of the track to load.
      */
-    public void loadAndPlay(TextChannel channel, String trackUrl) {
+    public void loadAndPlay(TextChannel channel, String trackUrl, Consumer<AudioTrack> callback, Consumer<AudioPlaylist> clb) {
         final GuildMusicHandler musicHandler = this.getMusicManager(channel.getGuild());
 
         this.audioPlayerManager.loadItemOrdered(musicHandler, trackUrl, new AudioLoadResultHandler() {
@@ -62,6 +64,7 @@ public class PlayerHandler {
             public void trackLoaded(AudioTrack track) {
                 musicHandler.scheduler.queue(track);
 
+                callback.accept(track);
                 Commentarii.getInstance().getLogHandler().log(
                         Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_play.title"),
                         Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_play.content", track.getInfo().title, track.getInfo().author),
@@ -72,7 +75,19 @@ public class PlayerHandler {
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
-                //
+                final List<AudioTrack> tracks = playlist.getTracks();
+
+                clb.accept(playlist);
+                Commentarii.getInstance().getLogHandler().log(
+                        Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_playlist_play.title"),
+                        Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_playlist_play.content", playlist.getName(), playlist.getTracks().size()+""),
+                        LogHandler.LogLevel.INFO,
+                        channel.getGuild().getIdLong()
+                );
+
+                for (final AudioTrack track : tracks) {
+                    musicHandler.scheduler.queue(track);
+                }
             }
 
             @Override

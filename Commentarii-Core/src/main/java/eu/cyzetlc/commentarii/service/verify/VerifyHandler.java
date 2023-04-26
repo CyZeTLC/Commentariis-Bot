@@ -73,6 +73,12 @@ public class VerifyHandler {
         this.verifyChannels.put(guild.getIdLong(), channel);
     }
 
+    /**
+     * It updates the database with the new role ID, and then updates the cache
+     *
+     * @param guild The guild the role is being applied to.
+     * @param role The role to apply to the user.
+     */
     public void apply(Guild guild, Role role) {
         if (this.verifyChannels.containsKey(guild.getIdLong())) {
             Commentarii.getInstance().getQueryHandler().createBuilder(

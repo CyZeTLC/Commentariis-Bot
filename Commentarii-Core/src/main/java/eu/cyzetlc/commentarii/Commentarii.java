@@ -1,6 +1,9 @@
 package eu.cyzetlc.commentarii;
 
 import eu.cyzetlc.commentarii.commands.*;
+import eu.cyzetlc.commentarii.commands.music.PlayCommand;
+import eu.cyzetlc.commentarii.commands.music.SkipCommand;
+import eu.cyzetlc.commentarii.commands.music.StopCommand;
 import eu.cyzetlc.commentarii.listener.*;
 import eu.cyzetlc.commentarii.service.apply.ApplyHandler;
 import eu.cyzetlc.commentarii.service.button.ButtonHandler;
@@ -65,7 +68,9 @@ public class Commentarii {
      * The main function is the entry point of the program.
      */
     public static void main(String[] args) throws LoginException, InterruptedException, IOException {
-        LogHandler.storeLogs();
+        if (args.length > 0) {
+            LogHandler.storeLogs();
+        }
         log.info("Initializing Commentarii-Instance");
         instance = new Commentarii();
     }
@@ -138,6 +143,9 @@ public class Commentarii {
         this.commandHandler.loadCommand(new ApplyChannelCommand());
         this.commandHandler.loadCommand(new SetupVerifyCommand());
         this.commandHandler.loadCommand(new ResendCommand());
+        this.commandHandler.loadCommand(new PlayCommand());
+        this.commandHandler.loadCommand(new StopCommand());
+        this.commandHandler.loadCommand(new SkipCommand());
     }
 
     /**

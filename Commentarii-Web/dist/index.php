@@ -4,35 +4,61 @@ initialize("home");
 
 require './default/header.php';
 ?>
-<h1 class="flex text-gray-600 font-semibold text-4xl">Willkommen, Tom <img style="padding-left: 5px; height: 40px" src="https://emojipedia-us.s3.amazonaws.com/source/microsoft-teams/337/partying-face_1f973.png" loading="lazy" /></h1>
+<h1 class="flex text-gray-600 font-semibold text-4xl">Willkommen, <?php echo $_SESSION['discord_data']['username']; ?> <img style="padding-left: 5px; height: 40px" src="https://emojipedia-us.s3.amazonaws.com/source/microsoft-teams/337/partying-face_1f973.png" loading="lazy" /></h1>
 <p class="text-neutral-400">Hier findest du die aktuellen Statistiken.</p>
-<br>
-<section class="bg-white rounded-lg shadow px-5 text-black">
-    <div class="py-12 grid lg:grid-cols-5 gap-4 text-center" id="stats">
+<section class="bg-white rounded-lg shadow p-3 text-black mt-4">
+    <?php
+    if (!isset($_SESSION['guild_id'])) {
+        echo '<h1 class="text-gray-600 font-semibold text-3xl p-2">Wähle deinen Server</h1>';
+        echo '<div class="grid lg:grid-cols-4 space-x-reverse space-y-reverse">';
+        foreach ($_SESSION['discord_guilds'] as $server) {
+            if ($server['owner'] == true || $server['owner'] == 1) {
+                $image_url = "https://toppng.com/uploads/preview/discord-logo-png-discord-ico-11562937135cilktsftux.png";
 
-    </div>
+                if ($server['icon'] !== null && $server['icon'] !== "") {
+                    $image_url = 'https://cdn.discordapp.com/icons/' . $server['id'] . '/' . $server['icon'] . '.webp?size=240';   
+                }
+
+                $stmt = $pdo->prepare('SELECT * FROM settings WHERE  guild_id = ?');
+                $stmt->execute(array($server['id']));
+                $rs = $stmt->fetch();
+
+                if ($stmt->rowCount() > 0) {
+                    echo "<div class='rounded-md bg-neutral-800 mx-2 my-2'>";
+                    echo '<a href="https://commentarii.cyzetlc.eu/mange/' . $server['id'] . '/home" class="text-sm hover:bg-blue-600 px-4 py-2 flex place-items-center rounded-md">';
+                    echo '<img src="' . $image_url . '" loading="lazy" class="w-12 rounded-full mr-2" />';
+                    echo '<p class="text-gray-200">' . $server['name'] . '</p>';
+                    echo '</a>';
+                    echo "</div>";
+                }
+            } 
+        }
+        echo '</div>';
+        echo "<hr>";
+        echo '<div class="grid lg:grid-cols-4">';
+
+        foreach ($_SESSION['discord_guilds'] as $server) {
+            if ($server['owner'] == true || $server['owner'] == 1) {
+                $stmt = $pdo->prepare('SELECT * FROM settings WHERE  guild_id = ?');
+                $stmt->execute(array($server['id']));
+                $rs = $stmt->fetch();
+
+                if ($stmt->rowCount() == 0) {
+                    echo "<div class='rounded-md bg-neutral-800 mx-2 my-2'>";
+                    echo '<a href="https://discord.com/oauth2/authorize?client_id=1007778519717269516&scope=bot&permissions=8&guild_id=' . $server['id'] . '&redirect_uri=https%3A%2F%2Fcommentarii.cyzetlc.eu%2Frest%2F%3Fjoined%3Dtrue" class="text-sm hover:bg-blue-600 px-4 py-2 flex place-items-center rounded-md">';
+                    echo '<h1 class="font-bold text-4xl text-white mb-2 mr-2">+</h1>';
+                    echo '<p class="text-gray-200">' . $server['name'] . '</p>';
+                    echo '</a>';
+                    echo "</div>";
+                }
+            } 
+        }
+    
+        echo '</div>';
+    }
+    ?>
 </section>
-<br>
-<section class="grid lg:grid-cols-2 gap-20">
-    <div class="bg-white rounded-lg shadow p-5 text-black w-full grid place-items-center overflow-x-scroll lg:overflow-x-hidden">
-        <h1 class="w-full text-gray-600 font-semibold text-3xl">Benutzer Tracking</h1>
-        <p class="text-neutral-400 w-full">Die 5 Städte mit den meisten Besuchern</p>
-        <br>
-        <div style="width: 340px; height: 340px;" id="user_tracking_div">
-            <canvas id="user_tracking"></canvas>
-        </div>
-    </div>
-    <div class="bg-white rounded-lg shadow p-5 text-black w-full overflow-x-scroll lg:overflow-x-hidden">
-        <h1 class="text-gray-600 font-semibold text-3xl">Browser Tracking</h1>
-        <p class="text-neutral-400">Die 4 meist benutzten Browser</p>
-        <br>
-        <div id="browser_tracking_div">
-            <canvas id="browser_tracking"></canvas>
-        </div>
-    </div>
-</section>
-<br>
-<section class="bg-white rounded-lg shadow p-5 text-black">
+<section class="bg-white rounded-lg shadow p-5 text-black mt-4">
     <h1 class="text-gray-600 font-semibold text-3xl">Aktuelle Session</h1>
     <br>
     <pre><?php print_r($_SESSION); ?></pre>

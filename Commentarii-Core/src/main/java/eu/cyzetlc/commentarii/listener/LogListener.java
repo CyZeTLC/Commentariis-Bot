@@ -159,9 +159,8 @@ public class LogListener extends ListenerAdapter {
         Commentarii.getInstance().getLogHandler().log("Reaktion hinzugefügt", log, LogHandler.LogLevel.INFO, event.getGuild().getIdLong());
     }
 
-    @Override
     // A method that is called when a user joins a voice channel.
-    public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
+    /*public void onGuildVoiceJoin(@NotNull GuildVoiceJoinEvent event) {
         if (!event.getMember().getId().equals(Commentarii.getInstance().getJda().getSelfUser().getId())) {
             AudioChannel connectedChannel = event.getMember().getVoiceState().getChannel();
             AudioManager audioManager = event.getGuild().getAudioManager();
@@ -172,7 +171,7 @@ public class LogListener extends ListenerAdapter {
                     .loadAndPlay(Commentarii.getInstance().getLogHandler().getLogChannelOfGuild(event.getGuild().getIdLong()),
                             "https://www.youtube.com/watch?v=ZevEW7zwslA");
         }
-    }
+    }*/
 
 
     /*

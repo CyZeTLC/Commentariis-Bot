@@ -14,8 +14,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 @Getter
@@ -50,7 +52,7 @@ public class LogHandler {
     public static void storeLogs() throws IOException {
         Path path = Path.of("./logs/latest.log");
         FileWriter latestFile = new FileWriter("./logs/latest.log");
-        FileWriter logFile = new FileWriter("./logs/" + LocalDateTime.now() + ".log");
+        FileWriter logFile = new FileWriter("./logs/" + new SimpleDateFormat("dd.MM.yyyy hh:mm:ss").format(new Date()) + ".log");
         try {
             String everything = Files.readString(path);
             logFile.write(everything);

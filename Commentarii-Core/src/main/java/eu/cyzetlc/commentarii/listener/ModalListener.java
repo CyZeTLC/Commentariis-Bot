@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public class ModalListener extends ListenerAdapter {
 
     @Override
+    // A method that is called when a modal is submitted.
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
         event.deferEdit().queue();
         if (Commentarii.getInstance().getModalHandler().getModals().get(event.getModalId()) != null) {
