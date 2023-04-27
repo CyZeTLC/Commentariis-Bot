@@ -51,12 +51,21 @@ public class PlayerHandler {
     }
 
     /**
-     * It loads the track from the URL, and then queues it to be played
+     * This function loads and plays audio tracks or playlists in a Discord channel and provides callbacks for success or
+     * failure.
      *
-     * @param channel The channel to send the message to.
-     * @param trackUrl The URL of the track to load.
+     * @param channel The Discord text channel where the music will be played.
+     * @param trackUrl The URL of the audio track or playlist to be loaded and played.
+     * @param callback The callback parameter is a Consumer functional interface that accepts an AudioTrack object as input
+     * and performs some operation on it. It is used to handle the loaded AudioTrack object after it has been successfully
+     * loaded by the audio player manager.
+     * @param clb The parameter "clb" is a Consumer that accepts an AudioPlaylist object as input and performs some action
+     * with it. It is used as a callback function when an audio playlist is successfully loaded.
+     * @param failed The "failed" parameter is a Consumer that accepts a String as input. It is used to handle the case
+     * where loading the audio track or playlist fails, and the String input is the error message explaining why the
+     * loading failed.
      */
-    public void loadAndPlay(TextChannel channel, String trackUrl, Consumer<AudioTrack> callback, Consumer<AudioPlaylist> clb) {
+    public void loadAndPlay(TextChannel channel, String trackUrl, Consumer<AudioTrack> callback, Consumer<AudioPlaylist> clb, Consumer<String> failed) {
         final GuildMusicHandler musicHandler = this.getMusicManager(channel.getGuild());
 
         this.audioPlayerManager.loadItemOrdered(musicHandler, trackUrl, new AudioLoadResultHandler() {
@@ -92,12 +101,12 @@ public class PlayerHandler {
 
             @Override
             public void noMatches() {
-                //
+                failed.accept(Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_no_matches"));
             }
 
             @Override
             public void loadFailed(FriendlyException exception) {
-                //
+                failed.accept(exception.getMessage());
             }
         });
     }

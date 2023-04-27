@@ -57,7 +57,8 @@ public class PlayCommand extends Command {
                     .loadAndPlay(Commentarii.getInstance().getLogHandler().getLogChannelOfGuild(event.getGuild().getIdLong()),
                             link,
                             (AudioTrack track) -> this.sendEmbed(Embed.getEmbed(Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_play.title"), Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_play.content", track.getInfo().title, track.getInfo().author), Color.GREEN)),
-                            (playlist) -> this.sendEmbed(Embed.getEmbed(Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_playlist_play.title"), Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_playlist_play.content", playlist.getName(), playlist.getTracks().size()+""), Color.GREEN)));
+                            (playlist) -> this.sendEmbed(Embed.getEmbed(Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_playlist_play.title"), Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_playlist_play.content", playlist.getName(), playlist.getTracks().size()+""), Color.GREEN)),
+                            (message) -> this.sendEmbed(Embed.getEmbed(Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_failed.title"), message, Color.RED)));
         } else {
             this.sendMessage(Commentarii.getInstance().getMessageHandler().getMessageForGuild(event.getGuild().getIdLong(), "commentarii.command.play.not_in_channel"));
         }
