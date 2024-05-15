@@ -20,4 +20,4 @@ Use the discord bot on your own discord server.
 
 ## Support
 
-For support, email admin@cyzetlc.eu or join our [Discord server](https://discord.gg/x2mhSz3eFf).
+For support, email tom@cyzetlc.de or join our [Discord server](https://discord.gg/x2mhSz3eFf).
