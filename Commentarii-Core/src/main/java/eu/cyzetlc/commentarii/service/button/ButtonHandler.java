@@ -5,7 +5,7 @@ import eu.cyzetlc.commentarii.service.button.annotation.ButtonSpecification;
 import eu.cyzetlc.commentarii.service.entities.Embed;
 import lombok.Getter;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;

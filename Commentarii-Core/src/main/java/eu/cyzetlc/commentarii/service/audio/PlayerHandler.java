@@ -10,7 +10,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import eu.cyzetlc.commentarii.Commentarii;
 import eu.cyzetlc.commentarii.service.log.LogHandler;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,49 +66,53 @@ public class PlayerHandler {
      * loading failed.
      */
     public void loadAndPlay(TextChannel channel, String trackUrl, Consumer<AudioTrack> callback, Consumer<AudioPlaylist> clb, Consumer<String> failed) {
-        final GuildMusicHandler musicHandler = this.getMusicManager(channel.getGuild());
+        if (channel != null) {
+            final GuildMusicHandler musicHandler = this.getMusicManager(channel.getGuild());
 
-        this.audioPlayerManager.loadItemOrdered(musicHandler, trackUrl, new AudioLoadResultHandler() {
-            @Override
-            public void trackLoaded(AudioTrack track) {
-                musicHandler.scheduler.queue(track);
-
-                callback.accept(track);
-                Commentarii.getInstance().getLogHandler().log(
-                        Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_play.title"),
-                        Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_play.content", track.getInfo().title, track.getInfo().author),
-                        LogHandler.LogLevel.INFO,
-                        channel.getGuild().getIdLong()
-                );
-            }
-
-            @Override
-            public void playlistLoaded(AudioPlaylist playlist) {
-                final List<AudioTrack> tracks = playlist.getTracks();
-
-                clb.accept(playlist);
-                Commentarii.getInstance().getLogHandler().log(
-                        Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_playlist_play.title"),
-                        Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_playlist_play.content", playlist.getName(), playlist.getTracks().size()+""),
-                        LogHandler.LogLevel.INFO,
-                        channel.getGuild().getIdLong()
-                );
-
-                for (final AudioTrack track : tracks) {
+            this.audioPlayerManager.loadItemOrdered(musicHandler, trackUrl, new AudioLoadResultHandler() {
+                @Override
+                public void trackLoaded(AudioTrack track) {
                     musicHandler.scheduler.queue(track);
+
+                    callback.accept(track);
+                    Commentarii.getInstance().getLogHandler().log(
+                            Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_play.title"),
+                            Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_play.content", track.getInfo().title, track.getInfo().author),
+                            LogHandler.LogLevel.INFO,
+                            channel.getGuild().getIdLong()
+                    );
                 }
-            }
 
-            @Override
-            public void noMatches() {
-                failed.accept(Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_no_matches"));
-            }
+                @Override
+                public void playlistLoaded(AudioPlaylist playlist) {
+                    final List<AudioTrack> tracks = playlist.getTracks();
 
-            @Override
-            public void loadFailed(FriendlyException exception) {
-                failed.accept(exception.getMessage());
-            }
-        });
+                    clb.accept(playlist);
+                    Commentarii.getInstance().getLogHandler().log(
+                            Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_playlist_play.title"),
+                            Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_playlist_play.content", playlist.getName(), playlist.getTracks().size()+""),
+                            LogHandler.LogLevel.INFO,
+                            channel.getGuild().getIdLong()
+                    );
+
+                    for (final AudioTrack track : tracks) {
+                        musicHandler.scheduler.queue(track);
+                    }
+                }
+
+                @Override
+                public void noMatches() {
+                    failed.accept(Commentarii.getInstance().getMessageHandler().getMessageForGuild(channel.getGuild().getIdLong(), "commentarii.log.music_no_matches"));
+                }
+
+                @Override
+                public void loadFailed(FriendlyException exception) {
+                    failed.accept(exception.getMessage());
+                }
+            });
+        } else {
+            failed.accept("Channel not found!");
+        }
     }
 
     /**

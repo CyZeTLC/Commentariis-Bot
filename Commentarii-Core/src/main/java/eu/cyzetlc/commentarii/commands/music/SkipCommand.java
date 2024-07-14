@@ -8,14 +8,12 @@ import eu.cyzetlc.commentarii.service.command.annotation.CommandSpecification;
 import eu.cyzetlc.commentarii.service.entities.Embed;
 import eu.cyzetlc.commentarii.service.entities.User;
 import net.dv8tion.jda.api.audio.SpeakingMode;
-import net.dv8tion.jda.api.entities.AudioChannel;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
 
 import java.awt.*;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 @CommandSpecification(
         command = "skip",

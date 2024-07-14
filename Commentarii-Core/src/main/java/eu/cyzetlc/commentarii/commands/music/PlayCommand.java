@@ -2,30 +2,23 @@ package eu.cyzetlc.commentarii.commands.music;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import eu.cyzetlc.commentarii.Commentarii;
-import eu.cyzetlc.commentarii.buttons.InviteMeButton;
-import eu.cyzetlc.commentarii.buttons.VisiteWebsiteButton;
+import eu.cyzetlc.commentarii.service.audio.GuildMusicHandler;
 import eu.cyzetlc.commentarii.service.audio.PlayerHandler;
 import eu.cyzetlc.commentarii.service.command.Command;
 import eu.cyzetlc.commentarii.service.command.annotation.CommandSpecification;
 import eu.cyzetlc.commentarii.service.entities.Embed;
 import eu.cyzetlc.commentarii.service.entities.User;
-import eu.cyzetlc.commentarii.service.log.LogHandler;
 import net.dv8tion.jda.api.audio.SpeakingMode;
-import net.dv8tion.jda.api.entities.AudioChannel;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.managers.AudioManager;
 
 import java.awt.*;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @CommandSpecification(
         command = "play",
@@ -44,6 +37,13 @@ public class PlayCommand extends Command {
         AudioChannel connectedChannel = event.getMember().getVoiceState().getChannel();
         if (connectedChannel != null) {
             AudioManager audioManager = event.getGuild().getAudioManager();
+
+            audioManager.closeAudioConnection();
+
+            final GuildMusicHandler musicHandler = PlayerHandler.getInstance().getMusicManager(audioManager.getGuild());
+            musicHandler.scheduler.player.stopTrack();
+            musicHandler.scheduler.queue.clear();
+
             audioManager.openAudioConnection(connectedChannel);
             audioManager.setSpeakingMode(SpeakingMode.VOICE);
 

@@ -5,7 +5,7 @@ import eu.cyzetlc.commentarii.modals.ApplyModal;
 import eu.cyzetlc.commentarii.service.command.Command;
 import eu.cyzetlc.commentarii.service.command.annotation.CommandSpecification;
 import eu.cyzetlc.commentarii.service.entities.User;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 @CommandSpecification(

@@ -21,7 +21,7 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.ReadyEvent;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.slf4j.Logger;
@@ -88,7 +88,7 @@ public class Commentarii {
         this.buildListeners();
         this.buildCommands();
 
-        new LogListener().onReady(new ReadyEvent(this.jda, 0));
+        new LogListener().onReady(new ReadyEvent(this.jda));
     }
 
     /**

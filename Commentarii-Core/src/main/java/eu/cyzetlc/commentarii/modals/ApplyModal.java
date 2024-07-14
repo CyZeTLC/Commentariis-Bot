@@ -4,7 +4,7 @@ import eu.cyzetlc.commentarii.Commentarii;
 import eu.cyzetlc.commentarii.service.entities.Embed;
 import eu.cyzetlc.commentarii.service.modal.Modal;
 import eu.cyzetlc.commentarii.service.modal.annotation.ModalSpecification;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.text.TextInput;
