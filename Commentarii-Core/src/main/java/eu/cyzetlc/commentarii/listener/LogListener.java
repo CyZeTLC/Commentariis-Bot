@@ -34,12 +34,12 @@ public class LogListener extends ListenerAdapter {
         Commentarii.getInstance().getCommandHandler().updateCommands(Commentarii.getInstance().getJda().getGuilds().get(0));
 
         for (Guild guild : Commentarii.getInstance().getJda().getGuilds()) {
-            Commentarii.getInstance().getLogHandler().log(
+            /*Commentarii.getInstance().getLogHandler().log(
                     Commentarii.getInstance().getMessageHandler().getMessageForGuild(guild.getIdLong(), "commentarii.log.started.title"),
                     Commentarii.getInstance().getMessageHandler().getMessageForGuild(guild.getIdLong(), "commentarii.log.started.content", String.valueOf(Commentarii.getStated()/1000)),
                     LogHandler.LogLevel.INFO,
                     guild.getIdLong()
-            );
+            );*/
         }
     }
 
