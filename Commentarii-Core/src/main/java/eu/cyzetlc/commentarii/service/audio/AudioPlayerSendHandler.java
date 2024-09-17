@@ -27,7 +27,12 @@ public class AudioPlayerSendHandler implements AudioSendHandler {
     @Override
     // Checking if the audio player can provide audio.
     public boolean canProvide() {
-        return this.audioPlayer.provide(this.frame);
+        try {
+            return this.audioPlayer.provide(this.frame);
+        } catch (Exception e) {
+
+        }
+        return false;
     }
 
     @Nullable

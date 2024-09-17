@@ -1,6 +1,5 @@
 package eu.cyzetlc.commentarii.commands.music;
 
-import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import eu.cyzetlc.commentarii.Commentarii;
 import eu.cyzetlc.commentarii.service.audio.GuildMusicHandler;
 import eu.cyzetlc.commentarii.service.audio.PlayerHandler;
@@ -8,9 +7,8 @@ import eu.cyzetlc.commentarii.service.command.Command;
 import eu.cyzetlc.commentarii.service.command.annotation.CommandSpecification;
 import eu.cyzetlc.commentarii.service.entities.Embed;
 import eu.cyzetlc.commentarii.service.entities.User;
-import net.dv8tion.jda.api.audio.SpeakingMode;
-import net.dv8tion.jda.api.entities.AudioChannel;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.AudioChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.managers.AudioManager;
 
@@ -27,8 +25,7 @@ public class StopCommand extends Command {
         AudioChannel connectedChannel = event.getMember().getVoiceState().getChannel();
         if (connectedChannel != null) {
             AudioManager audioManager = event.getGuild().getAudioManager();
-            audioManager.openAudioConnection(connectedChannel);
-            audioManager.setSpeakingMode(SpeakingMode.VOICE);
+            audioManager.closeAudioConnection();
 
             final GuildMusicHandler musicHandler = PlayerHandler.getInstance().getMusicManager(audioManager.getGuild());
             musicHandler.scheduler.player.stopTrack();

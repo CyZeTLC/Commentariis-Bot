@@ -1,12 +1,10 @@
 package eu.cyzetlc.commentarii.commands;
 
-import eu.cyzetlc.commentarii.buttons.InviteMeButton;
-import eu.cyzetlc.commentarii.buttons.VisiteWebsiteButton;
 import eu.cyzetlc.commentarii.service.command.Command;
 import eu.cyzetlc.commentarii.service.command.annotation.CommandSpecification;
 import eu.cyzetlc.commentarii.service.entities.Embed;
 import eu.cyzetlc.commentarii.service.entities.User;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.awt.*;
@@ -15,7 +13,6 @@ import java.net.InetAddress;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @CommandSpecification(
         command = "ping",

@@ -1,15 +1,11 @@
 package eu.cyzetlc.commentarii.listener;
 
 import eu.cyzetlc.commentarii.Commentarii;
-import eu.cyzetlc.commentarii.service.audio.PlayerHandler;
 import eu.cyzetlc.commentarii.service.log.LogHandler;
 import lombok.Getter;
-import net.dv8tion.jda.api.audio.SpeakingMode;
-import net.dv8tion.jda.api.entities.AudioChannel;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Invite;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.channel.ChannelCreateEvent;
 import net.dv8tion.jda.api.events.channel.ChannelDeleteEvent;
 import net.dv8tion.jda.api.events.channel.update.*;
@@ -20,10 +16,9 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
 import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateNicknameEvent;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
-import net.dv8tion.jda.api.events.guild.voice.GuildVoiceJoinEvent;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
+import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.managers.AudioManager;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
@@ -39,12 +34,12 @@ public class LogListener extends ListenerAdapter {
         Commentarii.getInstance().getCommandHandler().updateCommands(Commentarii.getInstance().getJda().getGuilds().get(0));
 
         for (Guild guild : Commentarii.getInstance().getJda().getGuilds()) {
-            Commentarii.getInstance().getLogHandler().log(
+            /*Commentarii.getInstance().getLogHandler().log(
                     Commentarii.getInstance().getMessageHandler().getMessageForGuild(guild.getIdLong(), "commentarii.log.started.title"),
                     Commentarii.getInstance().getMessageHandler().getMessageForGuild(guild.getIdLong(), "commentarii.log.started.content", String.valueOf(Commentarii.getStated()/1000)),
                     LogHandler.LogLevel.INFO,
                     guild.getIdLong()
-            );
+            );*/
         }
     }
 

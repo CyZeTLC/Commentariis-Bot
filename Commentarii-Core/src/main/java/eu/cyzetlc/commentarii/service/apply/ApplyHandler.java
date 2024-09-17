@@ -3,7 +3,7 @@ package eu.cyzetlc.commentarii.service.apply;
 import eu.cyzetlc.commentarii.Commentarii;
 import lombok.Getter;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import javax.sql.rowset.CachedRowSet;
 import java.sql.SQLException;

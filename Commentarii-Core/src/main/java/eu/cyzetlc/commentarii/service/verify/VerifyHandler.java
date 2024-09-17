@@ -6,7 +6,7 @@ import eu.cyzetlc.commentarii.service.entities.Embed;
 import lombok.Getter;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 import javax.sql.rowset.CachedRowSet;
 import java.awt.*;
